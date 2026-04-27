@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmed — City Decoder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Fredoka+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+    .success-card {
+      background: var(--white);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      border: 2px solid #f0e8dc;
+    }
+    .success-icon { font-size: 4rem; margin-bottom: 16px; }
+    .success-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2rem; color: var(--text);
+      margin-bottom: 12px;
+    }
+    .success-sub { color: var(--muted); margin-bottom: 32px; line-height: 1.7; }
+    .success-steps {
+      background: var(--cream);
+      border-radius: var(--r);
+      padding: 20px 24px;
+      text-align: left;
+      margin-bottom: 28px;
+    }
+    .success-steps p { font-size: 0.92rem; margin-bottom: 8px; }
+    .success-steps p:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+  <div class="success-card">
+    <div class="success-icon">🎉</div>
+    <h1 class="success-title">Booking Confirmed!</h1>
+    <p class="success-sub">
+      Payment successful. Check your inbox — your team name and password are on their way!<br>
+      <small style="color:#aaa">(Check your spam folder if you don't see it within a few minutes.)</small>
+    </p>
+    <div class="success-steps">
+      <p>📍 <strong>Start point:</strong> Ferry Building, Quay Street, Auckland</p>
+      <p>🌐 <strong>Game URL:</strong> <a href="https://auckland-decoder.netlify.app/" style="color:var(--orange)">auckland-decoder.netlify.app</a></p>
+      <p>⏱️ <strong>No expiry</strong> — play whenever you're ready</p>
+    </div>
+    <a href="/" class="btn-primary">← Back to City Decoder</a>
+  </div>
+</body>
+</html>

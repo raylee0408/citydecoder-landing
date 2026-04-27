@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>City Decoder — Explore Cities Differently</title>
+  <meta name="description" content="An outdoor adventure game where you explore real cities by solving puzzles at famous landmarks. Perfect for families, couples and friends.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">🗺️ <span>City Decoder</span></div>
+    <button class="lang-toggle" id="lang-toggle">中文</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge" data-en="🎮 Outdoor Puzzle Adventure" data-tw="🎮 戶外解謎冒險遊戲"></div>
+      <h1 class="hero-title" data-en="See Your City<br>Through New Eyes" data-tw="用全新視角<br>探索你的城市"></h1>
+      <p class="hero-sub" data-en="Walk, look, and solve puzzles at real landmarks. A unique adventure for families, couples, and friends — available 24 hours a day, no guide needed." data-tw="步行、觀察、在真實地標解謎。適合全家、情侶、朋友的獨特冒險，全天候 24 小時，不需要導遊。"></p>
+      <div class="hero-tags">
+        <span>👨‍👩‍👧 <span data-en="Family" data-tw="親子同遊"></span></span>
+        <span>💑 <span data-en="Couples" data-tw="情侶約會"></span></span>
+        <span>👫 <span data-en="Friends" data-tw="朋友出遊"></span></span>
+        <span>🌏 <span data-en="First-time visitors" data-tw="初訪旅客"></span></span>
+      </div>
+      <a href="#book" class="btn-primary">
+        <span data-en="Book Now" data-tw="立即預訂"></span> →
+      </a>
+    </div>
+    <div class="hero-illustration">
+      <div class="city-card">
+        <div class="city-card-map">
+          <div class="map-pin pin-1">📍</div>
+          <div class="map-pin pin-2">📍</div>
+          <div class="map-pin pin-3">📍</div>
+          <div class="map-road road-h"></div>
+          <div class="map-road road-v"></div>
+          <div class="map-player">🧭</div>
+        </div>
+        <div class="city-card-info">
+          <span class="city-card-label">🔐 <span data-en="Puzzle unlocked!" data-tw="謎題解開！"></span></span>
+        </div>
+      </div>
+      <div class="floating-badge badge-1">⏱️ ~1 <span data-en="hour" data-tw="小時"></span></div>
+      <div class="floating-badge badge-2">👥 2–6 <span data-en="players" data-tw="人"></span></div>
+      <div class="floating-badge badge-3">🏙️ <span data-en="Real city" data-tw="真實城市"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY ── -->
+<section class="why">
+  <div class="container">
+    <h2 class="section-title" data-en="Why City Decoder?" data-tw="為什麼選 City Decoder？"></h2>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">👀</div>
+        <h3 data-en="See Beyond the Tourist Trail" data-tw="超越觀光景點的視角"></h3>
+        <p data-en="Discover hidden details and stories of famous landmarks you'd normally walk past without a second glance." data-tw="發現你平常走過卻從未注意的地標背後的故事與細節。"></p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🕐</div>
+        <h3 data-en="Play Any Time, Any Day" data-tw="全天候，隨時可玩"></h3>
+        <p data-en="No booking windows, no tour groups, no waiting. Start whenever you're ready — morning, afternoon, or evening." data-tw="不用預約時段，不用跟團等待。早上、下午、傍晚，隨時出發。"></p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🤝</div>
+        <h3 data-en="Together in Every Step" data-tw="每一步都一起走"></h3>
+        <p data-en="Solve clues as a team. Perfect for families with kids, date nights, or group outings that need something different." data-tw="一起討論解謎。適合親子家庭、情侶約會、或想找些不一樣體驗的朋友聚會。"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how">
+  <div class="container">
+    <h2 class="section-title" data-en="How It Works" data-tw="怎麼玩？"></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3 data-en="Book & Get Your Code" data-tw="預訂並取得密碼"></h3>
+          <p data-en="Choose a route, pay online, and receive your team name and password by email instantly." data-tw="選擇路線，線上付款，立即收到隊伍名稱和密碼。"></p>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3 data-en="Head to the Start Point" data-tw="前往起點"></h3>
+          <p data-en="Log in at the start location. The game guides you from landmark to landmark — no app download needed." data-tw="在起點登入遊戲。系統引導你從一個地標走到下一個，不需要下載任何 App。"></p>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3 data-en="Explore, Solve & Compete" data-tw="探索、解謎、競賽"></h3>
+          <p data-en="Use your eyes and feet to find clues. Race against the clock and climb the leaderboard." data-tw="用眼睛和雙腳尋找線索。跟時間賽跑，挑戰排行榜。"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ROUTES ── -->
+<section class="routes" id="routes">
+  <div class="container">
+    <h2 class="section-title" data-en="Available Routes" data-tw="目前路線"></h2>
+    <div class="routes-grid">
+
+      <!-- Auckland — Queen St Explorer -->
+      <div class="route-card route-active">
+        <div class="route-city-tag">🇳🇿 Auckland</div>
+        <div class="route-image">
+          <div class="route-map-preview">
+            <span class="route-map-emoji">🏙️</span>
+          </div>
+        </div>
+        <div class="route-body">
+          <h3 class="route-name">Queen St Explorer</h3>
+          <p class="route-desc" data-en="From the waterfront to the heart of the CBD — uncover the hidden stories behind Auckland's most iconic landmarks." data-tw="從海濱到市中心，揭開奧克蘭最具代表性地標背後的隱藏故事。"></p>
+          <div class="route-stats">
+            <span>📍 10 <span data-en="Puzzles" data-tw="關卡"></span></span>
+            <span>🚶 1.45 km</span>
+            <span>⏱️ ~1 <span data-en="hour" data-tw="小時"></span></span>
+            <span>👥 2–6 <span data-en="players" data-tw="人"></span></span>
+          </div>
+          <a href="#book" class="btn-route" data-en="Book This Route →" data-tw="預訂此路線 →"></a>
+        </div>
+      </div>
+
+      <!-- Coming Soon 1 -->
+      <div class="route-card route-soon">
+        <div class="route-city-tag">🇳🇿 Auckland</div>
+        <div class="route-coming-soon-badge" data-en="Coming Soon" data-tw="即將推出"></div>
+        <div class="route-image">
+          <div class="route-map-preview route-map-blur">
+            <span class="route-map-emoji">🌿</span>
+          </div>
+        </div>
+        <div class="route-body">
+          <h3 class="route-name" data-en="Route 2 — TBA" data-tw="路線二 — 待公佈"></h3>
+          <p class="route-desc" data-en="A new Auckland adventure is in the works. Stay tuned!" data-tw="新的奧克蘭冒險路線正在籌備中，敬請期待！"></p>
+        </div>
+      </div>
+
+      <!-- Coming Soon 2 -->
+      <div class="route-card route-soon">
+        <div class="route-city-tag">🇳🇿 Wellington</div>
+        <div class="route-coming-soon-badge" data-en="Coming Soon" data-tw="即將推出"></div>
+        <div class="route-image">
+          <div class="route-map-preview route-map-blur">
+            <span class="route-map-emoji">🌊</span>
+          </div>
+        </div>
+        <div class="route-body">
+          <h3 class="route-name" data-en="Wellington — TBA" data-tw="威靈頓 — 待公佈"></h3>
+          <p class="route-desc" data-en="Expanding to New Zealand's capital. Sign up to be notified!" data-tw="即將拓展至紐西蘭首都。留下 email 第一個收到通知！"></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── BOOKING ── -->
+<section class="book" id="book">
+  <div class="container">
+    <h2 class="section-title" data-en="Book Your Adventure" data-tw="預訂你的冒險"></h2>
+    <p class="book-sub" data-en="Pay once, play any time. Your team code will be emailed instantly." data-tw="付款一次，隨時出發。隊伍密碼立即寄到你的信箱。"></p>
+
+    <div class="book-card">
+      <div class="book-route-summary">
+        <span class="book-route-name">🏙️ Queen St Explorer — Auckland</span>
+        <span class="book-price" id="price-display">NZ$ ??</span>
+      </div>
+
+      <form id="book-form" class="book-form">
+        <div class="form-group">
+          <label data-en="Team Name" data-tw="隊伍名稱"></label>
+          <input type="text" id="team-name" placeholder="e.g. Smith Family" maxlength="20" autocomplete="off" required>
+          <span class="field-hint" data-en="This will be your login name in the game" data-tw="這將是你在遊戲中的登入名稱"></span>
+          <span class="field-error hidden" id="team-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label data-en="Email Address" data-tw="Email 地址"></label>
+          <input type="email" id="email" placeholder="your@email.com" required>
+          <span class="field-hint" data-en="Your game password will be sent here" data-tw="遊戲密碼將寄送至此信箱"></span>
+        </div>
+
+        <div class="form-group">
+          <label data-en="Promo Code (optional)" data-tw="優惠碼（選填）"></label>
+          <div class="promo-row">
+            <input type="text" id="promo-code" placeholder="WELCOME10" autocomplete="off" style="text-transform:uppercase">
+            <button type="button" id="apply-promo" class="btn-secondary" data-en="Apply" data-tw="套用"></button>
+          </div>
+          <span class="promo-msg hidden" id="promo-msg"></span>
+        </div>
+
+        <div class="book-total">
+          <span data-en="Total" data-tw="合計"></span>
+          <strong id="total-display">NZ$ ??</strong>
+        </div>
+
+        <button type="submit" class="btn-primary btn-block" id="checkout-btn">
+          <span id="checkout-btn-text" data-en="Proceed to Payment →" data-tw="前往付款 →"></span>
+        </button>
+
+        <p class="book-secure" data-en="🔒 Secure payment via Stripe. We never store your card details." data-tw="🔒 透過 Stripe 安全付款，我們不儲存任何信用卡資料。"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="faq">
+  <div class="container">
+    <h2 class="section-title" data-en="Questions?" data-tw="常見問題"></h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary data-en="Do I need to download an app?" data-tw="需要下載 App 嗎？"></summary>
+        <p data-en="No app needed! The game runs entirely in your phone's browser. Just open the link, log in, and play." data-tw="不需要下載任何 App！遊戲完全在手機瀏覽器中運行，開啟連結、登入、直接開玩。"></p>
+      </details>
+      <details class="faq-item">
+        <summary data-en="How many people can play together?" data-tw="可以幾個人一起玩？"></summary>
+        <p data-en="2 to 6 people per team. Each person can follow on their own phone — the game syncs in real time." data-tw="每隊 2 到 6 人。每個人可以用自己的手機，遊戲會即時同步。"></p>
+      </details>
+      <details class="faq-item">
+        <summary data-en="What if we get stuck?" data-tw="如果卡關怎麼辦？"></summary>
+        <p data-en="Each puzzle has a hint button (+1 min penalty) and a background story button to help you along." data-tw="每個謎題都有提示按鈕（+1 分鐘罰時）和背景故事按鈕幫助你前進。"></p>
+      </details>
+      <details class="faq-item">
+        <summary data-en="When does my code expire?" data-tw="密碼什麼時候過期？"></summary>
+        <p data-en="Your team code does not expire — use it whenever you're ready, rain or shine." data-tw="你的隊伍密碼沒有使用期限，天晴下雨都可以隨時開始。"></p>
+      </details>
+      <details class="faq-item">
+        <summary data-en="Can I get a refund?" data-tw="可以退款嗎？"></summary>
+        <p data-en="We offer refunds if requested before the game has been started. Contact us at hello@citydecoder.com." data-tw="在遊戲開始前提出申請可以退款。聯絡我們：hello@citydecoder.com。"></p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-logo">🗺️ City Decoder</div>
+    <p data-en="Explore cities with your eyes and feet." data-tw="用眼睛和雙腳探索城市。"></p>
+    <p class="footer-links">
+      <a href="mailto:hello@citydecoder.com">hello@citydecoder.com</a>
+    </p>
+    <p class="footer-copy">© 2026 City Decoder. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
