@@ -1,5 +1,5 @@
 // ── Language ──────────────────────────────────────────────────────
-const PRICE = null; // Set to actual price e.g. 35 before launch
+const PRICE = 25; // NZ$25 per team
 const PRICE_CURRENCY = 'NZD';
 
 // Promo codes — add/remove as needed (applied in Netlify Function too)
