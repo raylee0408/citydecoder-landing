@@ -100,7 +100,7 @@ exports.handler = async (event) => {
   `;
 
   await resend.emails.send({
-    from:    'City Decoder <hello@citydecoder.com>',
+    from:    'City Decoder <onboarding@resend.dev>',
     to:      email,
     subject: lang === 'tw'
       ? `🗺️ 你的 City Decoder 密碼：${teamName}`
