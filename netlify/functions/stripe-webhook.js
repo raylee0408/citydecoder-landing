@@ -69,6 +69,7 @@ exports.handler = async (event) => {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const gameUrl = 'https://auckland-decoder.netlify.app/';
 
+  const mapsUrl = 'https://maps.google.com/?q=Ferry+Building,+Quay+Street,+Auckland';
   const emailHtml = lang === 'tw' ? `
     <div style="font-family:sans-serif;max-width:500px;margin:0 auto;padding:24px">
       <h1 style="color:#FF6B35">🗺️ 你的 City Decoder 密碼來了！</h1>
@@ -79,7 +80,21 @@ exports.handler = async (event) => {
         <p style="margin:0 0 8px;font-size:0.9rem;color:#666">密碼</p>
         <h2 style="margin:0;font-size:3rem;color:#FF6B35;letter-spacing:8px">${password}</h2>
       </div>
-      <p>準備好了就前往起點：<strong>Ferry Building，Quay Street, Auckland</strong></p>
+
+      <div style="background:#f0f7ff;border-radius:12px;padding:20px;margin:20px 0">
+        <p style="margin:0 0 12px;font-weight:bold;font-size:1rem">📍 遊戲起點</p>
+        <p style="margin:0 0 8px"><strong>Ferry Building，Quay Street, Auckland</strong></p>
+        <a href="${mapsUrl}" style="color:#0077b6;font-size:0.9rem">在 Google Maps 查看 →</a>
+      </div>
+
+      <div style="background:#f9f9f9;border-radius:12px;padding:20px;margin:20px 0">
+        <p style="margin:0 0 12px;font-weight:bold;font-size:1rem">📋 注意事項</p>
+        <p style="margin:0 0 6px">📱 每位玩家需要一支有網路的手機</p>
+        <p style="margin:0 0 6px">👥 建議人數：2–6 人</p>
+        <p style="margin:0 0 6px">⏱️ 遊戲時間約 60–90 分鐘</p>
+        <p style="margin:0">⚠️ 請注意交通安全，過馬路時小心車輛</p>
+      </div>
+
       <a href="${gameUrl}" style="display:inline-block;background:#FF6B35;color:#fff;padding:14px 28px;border-radius:50px;text-decoration:none;font-weight:bold;margin:16px 0">開始遊戲 →</a>
       <p style="color:#666;font-size:0.85rem">密碼沒有使用期限，隨時可以開始。有問題請聯絡 hello@citydecoder.com</p>
     </div>
@@ -93,7 +108,21 @@ exports.handler = async (event) => {
         <p style="margin:0 0 8px;font-size:0.9rem;color:#666">Password</p>
         <h2 style="margin:0;font-size:3rem;color:#FF6B35;letter-spacing:8px">${password}</h2>
       </div>
-      <p>Head to the start point: <strong>Ferry Building, Quay Street, Auckland</strong></p>
+
+      <div style="background:#f0f7ff;border-radius:12px;padding:20px;margin:20px 0">
+        <p style="margin:0 0 12px;font-weight:bold;font-size:1rem">📍 Starting Point</p>
+        <p style="margin:0 0 8px"><strong>Ferry Building, Quay Street, Auckland</strong></p>
+        <a href="${mapsUrl}" style="color:#0077b6;font-size:0.9rem">View on Google Maps →</a>
+      </div>
+
+      <div style="background:#f9f9f9;border-radius:12px;padding:20px;margin:20px 0">
+        <p style="margin:0 0 12px;font-weight:bold;font-size:1rem">📋 Things to Know</p>
+        <p style="margin:0 0 6px">📱 Each player needs a smartphone with internet</p>
+        <p style="margin:0 0 6px">👥 Recommended group size: 2–6 people</p>
+        <p style="margin:0 0 6px">⏱️ Allow 60–90 minutes to complete</p>
+        <p style="margin:0">⚠️ Stay safe — watch out for traffic when crossing roads</p>
+      </div>
+
       <a href="${gameUrl}" style="display:inline-block;background:#FF6B35;color:#fff;padding:14px 28px;border-radius:50px;text-decoration:none;font-weight:bold;margin:16px 0">Start Playing →</a>
       <p style="color:#666;font-size:0.85rem">Your code never expires — play whenever you're ready. Questions? Email hello@citydecoder.com</p>
     </div>
