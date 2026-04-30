@@ -73,12 +73,19 @@ exports.handler = async (event) => {
   const emailHtml = lang === 'tw' ? `
     <div style="font-family:sans-serif;max-width:500px;margin:0 auto;padding:24px">
       <h1 style="color:#FF6B35">🗺️ 你的 City Decoder 密碼來了！</h1>
-      <p>感謝你預訂 <strong>Queen St Explorer — 奧克蘭</strong>！</p>
+      <p>感謝你預訂 <strong>Queen St Explorer — 奧克蘭</strong>！把這封信分享給全隊，大家用同一組名稱和密碼登入。</p>
       <div style="background:#FFF8F0;border:2px solid #FFD166;border-radius:16px;padding:24px;margin:24px 0;text-align:center">
         <p style="margin:0 0 8px;font-size:0.9rem;color:#666">隊伍名稱</p>
         <h2 style="margin:0 0 16px;font-size:1.8rem;color:#1a1a2e">${teamName}</h2>
         <p style="margin:0 0 8px;font-size:0.9rem;color:#666">密碼</p>
         <h2 style="margin:0;font-size:3rem;color:#FF6B35;letter-spacing:8px">${password}</h2>
+      </div>
+
+      <div style="background:#e8f5e9;border-radius:12px;padding:20px;margin:20px 0">
+        <p style="margin:0 0 12px;font-weight:bold;font-size:1rem">🚀 如何開始</p>
+        <p style="margin:0 0 8px">1️⃣ 前往 <a href="${gameUrl}" style="color:#FF6B35;font-weight:bold">遊戲網站</a></p>
+        <p style="margin:0 0 8px">2️⃣ 輸入上方的隊伍名稱和密碼</p>
+        <p style="margin:0">3️⃣ 前往 Ferry Building 集合，點擊「開始遊戲」！</p>
       </div>
 
       <div style="background:#f0f7ff;border-radius:12px;padding:20px;margin:20px 0">
@@ -96,17 +103,24 @@ exports.handler = async (event) => {
       </div>
 
       <a href="${gameUrl}" style="display:inline-block;background:#FF6B35;color:#fff;padding:14px 28px;border-radius:50px;text-decoration:none;font-weight:bold;margin:16px 0">開始遊戲 →</a>
-      <p style="color:#666;font-size:0.85rem">密碼沒有使用期限，隨時可以開始。有問題請聯絡 hello@citydecoder.com</p>
+      <p style="color:#666;font-size:0.85rem">⏳ 密碼在<strong>第一次登入後 48 小時內</strong>有效，準備好再開始。有問題請聯絡 hello@citydecoder.com</p>
     </div>
   ` : `
     <div style="font-family:sans-serif;max-width:500px;margin:0 auto;padding:24px">
       <h1 style="color:#FF6B35">🗺️ Your City Decoder is ready!</h1>
-      <p>Thanks for booking <strong>Queen St Explorer — Auckland</strong>!</p>
+      <p>Thanks for booking <strong>Queen St Explorer — Auckland</strong>! Share this email with your whole team — everyone uses the same team name and password.</p>
       <div style="background:#FFF8F0;border:2px solid #FFD166;border-radius:16px;padding:24px;margin:24px 0;text-align:center">
         <p style="margin:0 0 8px;font-size:0.9rem;color:#666">Team Name</p>
         <h2 style="margin:0 0 16px;font-size:1.8rem;color:#1a1a2e">${teamName}</h2>
         <p style="margin:0 0 8px;font-size:0.9rem;color:#666">Password</p>
         <h2 style="margin:0;font-size:3rem;color:#FF6B35;letter-spacing:8px">${password}</h2>
+      </div>
+
+      <div style="background:#e8f5e9;border-radius:12px;padding:20px;margin:20px 0">
+        <p style="margin:0 0 12px;font-weight:bold;font-size:1rem">🚀 How to Start</p>
+        <p style="margin:0 0 8px">1️⃣ Go to the <a href="${gameUrl}" style="color:#FF6B35;font-weight:bold">game website</a></p>
+        <p style="margin:0 0 8px">2️⃣ Enter the team name and password above</p>
+        <p style="margin:0">3️⃣ Head to the Ferry Building and tap "Start Game"!</p>
       </div>
 
       <div style="background:#f0f7ff;border-radius:12px;padding:20px;margin:20px 0">
@@ -124,7 +138,7 @@ exports.handler = async (event) => {
       </div>
 
       <a href="${gameUrl}" style="display:inline-block;background:#FF6B35;color:#fff;padding:14px 28px;border-radius:50px;text-decoration:none;font-weight:bold;margin:16px 0">Start Playing →</a>
-      <p style="color:#666;font-size:0.85rem">Your code never expires — play whenever you're ready. Questions? Email hello@citydecoder.com</p>
+      <p style="color:#666;font-size:0.85rem">⏳ Your code is valid for <strong>48 hours from first use</strong> — start when your group is ready. Questions? Email hello@citydecoder.com</p>
     </div>
   `;
 
