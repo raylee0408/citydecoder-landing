@@ -103,7 +103,7 @@ exports.handler = async (event) => {
       </div>
 
       <a href="${gameUrl}" style="display:inline-block;background:#FF6B35;color:#fff;padding:14px 28px;border-radius:50px;text-decoration:none;font-weight:bold;margin:16px 0">開始遊戲 →</a>
-      <p style="color:#666;font-size:0.85rem">⏳ 密碼在<strong>第一次登入後 48 小時內</strong>有效，準備好再開始。有問題請聯絡 hello@citydecoder.com</p>
+      <p style="color:#666;font-size:0.85rem">⏳ 密碼在<strong>第一次登入後 48 小時內</strong>有效，準備好再開始。有問題請聯絡 hello@playcitydecoder.com</p>
     </div>
   ` : `
     <div style="font-family:sans-serif;max-width:500px;margin:0 auto;padding:24px">
@@ -138,12 +138,12 @@ exports.handler = async (event) => {
       </div>
 
       <a href="${gameUrl}" style="display:inline-block;background:#FF6B35;color:#fff;padding:14px 28px;border-radius:50px;text-decoration:none;font-weight:bold;margin:16px 0">Start Playing →</a>
-      <p style="color:#666;font-size:0.85rem">⏳ Your code is valid for <strong>48 hours from first use</strong> — start when your group is ready. Questions? Email hello@citydecoder.com</p>
+      <p style="color:#666;font-size:0.85rem">⏳ Your code is valid for <strong>48 hours from first use</strong> — start when your group is ready. Questions? Email hello@playcitydecoder.com</p>
     </div>
   `;
 
   await resend.emails.send({
-    from:    'City Decoder <onboarding@resend.dev>',
+    from:    'City Decoder <hello@playcitydecoder.com>',
     to:      email,
     subject: lang === 'tw'
       ? `🗺️ 你的 City Decoder 密碼：${teamName}`
