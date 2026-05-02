@@ -67,7 +67,7 @@ exports.handler = async (event) => {
 
   // Send email via Resend
   const resend = new Resend(process.env.RESEND_API_KEY);
-  const gameUrl = 'https://auckland-decoder.netlify.app/';
+  const gameUrl = 'https://auckland.playcitydecoder.com/';
 
   const mapsUrl = 'https://maps.google.com/?q=Ferry+Building,+Quay+Street,+Auckland';
   const emailHtml = lang === 'tw' ? `
