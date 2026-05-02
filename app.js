@@ -4,8 +4,7 @@ const PRICE_CURRENCY = 'NZD';
 
 // Promo codes — add/remove as needed (applied in Netlify Function too)
 const PROMO_CODES = {
-  // 'WELCOME10': 10,   // 10% off
-  // 'FAMILY20': 20,    // 20% off
+  'TEST94': 94,
 };
 
 let lang = 'en';
