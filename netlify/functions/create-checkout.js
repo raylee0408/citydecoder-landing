@@ -17,7 +17,8 @@ exports.handler = async (event) => {
   let body;
   try { body = JSON.parse(event.body); } catch { return { statusCode: 400, body: 'Invalid JSON' }; }
 
-  const { teamName, email, promoCode, lang } = body;
+  const { teamName, promoCode, lang } = body;
+  const email = (body.email || '').trim().toLowerCase();
   if (!teamName || !email) return { statusCode: 400, body: JSON.stringify({ error: 'Missing fields' }) };
 
   // Sanitise team name
