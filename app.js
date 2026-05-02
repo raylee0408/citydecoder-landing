@@ -3,9 +3,6 @@ const PRICE = 25; // NZ$25 per team
 const PRICE_CURRENCY = 'NZD';
 
 // Promo codes — add/remove as needed (applied in Netlify Function too)
-const PROMO_CODES = {
-  'TEST94': 94,
-};
 
 let lang = 'en';
 let promoDiscount = 0; // percent
@@ -53,7 +50,7 @@ function updatePriceDisplay() {
 updatePriceDisplay();
 
 // ── Promo Code ────────────────────────────────────────────────────
-document.getElementById('apply-promo').addEventListener('click', () => {
+document.getElementById('apply-promo').addEventListener('click', async () => {
   const code  = document.getElementById('promo-code').value.trim().toUpperCase();
   const msgEl = document.getElementById('promo-msg');
   msgEl.classList.remove('hidden', 'success', 'error');
@@ -63,19 +60,35 @@ document.getElementById('apply-promo').addEventListener('click', () => {
     msgEl.textContent = lang === 'tw' ? '請輸入優惠碼' : 'Please enter a promo code';
     return;
   }
-  if (PROMO_CODES[code] !== undefined) {
-    promoDiscount = PROMO_CODES[code];
-    msgEl.className = 'promo-msg success';
-    msgEl.textContent = lang === 'tw'
-      ? `✅ 優惠碼已套用：折扣 ${promoDiscount}%`
-      : `✅ Code applied: ${promoDiscount}% off`;
-    updatePriceDisplay();
-  } else {
+
+  msgEl.className = 'promo-msg';
+  msgEl.textContent = lang === 'tw' ? '驗證中…' : 'Checking…';
+
+  try {
+    const res  = await fetch('/.netlify/functions/validate-promo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code })
+    });
+    const data = await res.json();
+
+    if (data.valid) {
+      promoDiscount = data.discount;
+      msgEl.className = 'promo-msg success';
+      msgEl.textContent = lang === 'tw'
+        ? `✅ 優惠碼已套用：折扣 ${promoDiscount}%`
+        : `✅ Code applied: ${promoDiscount}% off`;
+    } else {
+      promoDiscount = 0;
+      msgEl.className = 'promo-msg error';
+      msgEl.textContent = lang === 'tw' ? '❌ 無效的優惠碼' : '❌ Invalid promo code';
+    }
+  } catch {
     promoDiscount = 0;
     msgEl.className = 'promo-msg error';
-    msgEl.textContent = lang === 'tw' ? '❌ 無效的優惠碼' : '❌ Invalid promo code';
-    updatePriceDisplay();
+    msgEl.textContent = lang === 'tw' ? '❌ 驗證失敗，請重試' : '❌ Validation failed, please try again';
   }
+  updatePriceDisplay();
 });
 
 // ── Booking Form ──────────────────────────────────────────────────
