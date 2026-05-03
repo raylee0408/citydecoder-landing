@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Auckland City Decoder</title>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCa2-cHfl0J_V-3Z0srTDgN1blFYJ59NLo",
+            authDomain: "city-d97d8.firebaseapp.com",
+            databaseURL: "https://city-d97d8-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "city-d97d8",
+            storageBucket: "city-d97d8.firebasestorage.app",
+            messagingSenderId: "698547853110",
+            appId: "1:698547853110:web:c70c0ff22cc9f5893ec597"
+        };
+        firebase.initializeApp(firebaseConfig);
+        window.db   = firebase.firestore();
+        window.rtdb = firebase.database();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Nunito', sans-serif; background: #f0f4f8; color: #2b2b2b; min-height: 100vh; }
+
+        /* Login */
+        #admin-login { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .admin-login-box { background: white; border-radius: 16px; padding: 40px; width: 100%; max-width: 380px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); text-align: center; }
+        .admin-login-box h1 { font-size: 1.4rem; color: #023e8a; margin-bottom: 8px; }
+        .admin-login-box p { color: #666; font-size: 0.9rem; margin-bottom: 24px; }
+
+        /* Panel */
+        #admin-panel { display: none; max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+        .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid #e0e0e0; }
+        .admin-header h1 { font-size: 1.4rem; color: #023e8a; }
+
+        /* Route selector */
+        .route-selector { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+        .route-label { font-size: 0.85rem; font-weight: 600; color: #666; }
+        .route-btn { padding: 6px 14px; border: 1.5px solid #ddd; border-radius: 20px; background: white; cursor: pointer; font-family: inherit; font-size: 0.85rem; font-weight: 600; color: #666; transition: all 0.15s; }
+        .route-btn.active { background: #FF6B35; color: white; border-color: #FF6B35; }
+        .route-select { padding: 8px 10px; border: 1.5px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 0.9rem; width: 100%; }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab { padding: 8px 16px; border: 1.5px solid #ddd; border-radius: 8px; background: white; cursor: pointer; font-family: inherit; font-size: 0.88rem; font-weight: 600; color: #666; }
+        .tab.active { background: #0077b6; color: white; border-color: #0077b6; }
+
+        /* Cards */
+        .card { background: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+        .card h2 { font-size: 1.1rem; color: #023e8a; margin-bottom: 16px; }
+
+        /* Forms */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        @media (max-width: 600px) { .form-row, .form-row-3 { grid-template-columns: 1fr; } }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        label { font-size: 0.83rem; font-weight: 700; color: #444; }
+        input[type="text"], input[type="email"], input[type="password"], input[type="date"] {
+            border: 1.5px solid #ddd; border-radius: 10px; padding: 10px 14px;
+            font-family: inherit; font-size: 0.92rem; outline: none; width: 100%;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: #0077b6; }
+
+        /* Password chips */
+        .pw-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+        .pw-chip { background: #e0f7fa; border: 1.5px solid #b2ebf2; border-radius: 8px; padding: 6px 14px; font-size: 1rem; font-weight: 700; font-family: monospace; cursor: pointer; color: #023e8a; }
+        .pw-chip:hover { background: #b2ebf2; }
+        .pw-chip.selected { background: #0077b6; color: white; border-color: #0077b6; }
+        .gen-btn { background: none; border: none; color: #0077b6; cursor: pointer; font-family: inherit; font-size: 0.83rem; text-decoration: underline; }
+
+        /* Buttons */
+        .btn { padding: 10px 18px; border: none; border-radius: 10px; font-family: inherit; font-size: 0.92rem; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
+        .btn:active { opacity: 0.75; }
+        .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+        .btn-primary { background: #0077b6; color: white; width: 100%; margin-top: 8px; }
+        .btn-primary:hover:not(:disabled) { opacity: 0.88; }
+        .btn-danger  { background: #d90429; color: white; padding: 4px 10px; font-size: 0.78rem; border-radius: 6px; }
+        .btn-warning { background: #e07c00; color: white; padding: 4px 10px; font-size: 0.78rem; border-radius: 6px; }
+        .btn-small   { background: #023e8a; color: white; padding: 5px 12px; font-size: 0.82rem; border-radius: 6px; }
+        .btn-outline { background: white; color: #0077b6; border: 1.5px solid #0077b6; padding: 5px 12px; font-size: 0.82rem; border-radius: 6px; }
+        .logout-btn  { background: none; border: 1px solid #ccc; border-radius: 8px; padding: 6px 14px; cursor: pointer; color: #666; font-family: inherit; font-size: 0.85rem; }
+        .logout-btn:hover { background: #f5f5f5; }
+
+        /* Section header row */
+        .section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+        .section-title h2 { margin: 0; }
+        .btn-group { display: flex; gap: 6px; flex-wrap: wrap; }
+
+        /* Messages */
+        .msg { min-height: 20px; font-size: 0.87rem; margin-top: 8px; text-align: center; }
+        .msg.success { color: #2dc653; }
+        .msg.error   { color: #d90429; }
+
+        /* Tables */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
+        .data-table th { text-align: left; padding: 8px 10px; background: #f0f4f8; color: #444; font-weight: 700; border-bottom: 2px solid #ddd; white-space: nowrap; }
+        .data-table td { padding: 9px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+        .data-table tr:hover td { background: #fafafa; }
+        .pw-display { font-family: monospace; font-size: 1rem; font-weight: 700; color: #023e8a; letter-spacing: 2px; }
+        .level-badge { display: inline-block; background: #e0f7fa; color: #023e8a; border-radius: 20px; padding: 2px 10px; font-size: 0.82rem; font-weight: 700; }
+        .level-badge.done { background: #c8f7d0; color: #1a6b30; }
+        .expiry-ok   { color: #2dc653; font-weight: 700; font-size: 0.82rem; }
+        .expiry-warn { color: #e07c00; font-weight: 700; font-size: 0.82rem; }
+        .expiry-exp  { color: #d90429; font-weight: 700; font-size: 0.82rem; }
+        .empty-state { text-align: center; color: #999; padding: 28px; }
+
+        /* Edit Modal */
+        .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal-backdrop.hidden { display: none; }
+        .modal-box { background: white; border-radius: 16px; padding: 28px; width: 100%; max-width: 440px; box-shadow: 0 16px 48px rgba(0,0,0,0.25); }
+        .modal-box h2 { color: #023e8a; margin-bottom: 20px; }
+        .modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+        .modal-actions .btn { flex: 1; }
+
+        /* Live status dot */
+        .live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #2dc653; margin-right: 4px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    </style>
+</head>
+<body>
+
+<!-- ── Admin Login ─────────────────────────────────────────────────────── -->
+<div id="admin-login">
+    <div class="admin-login-box">
+        <h1>🔐 管理員後台</h1>
+        <p>Auckland City Decoder</p>
+        <div class="form-group" style="text-align:left;margin-bottom:16px">
+            <label>管理員密碼</label>
+            <input type="password" id="admin-pw-input" placeholder="輸入密碼" autofocus>
+        </div>
+        <button class="btn btn-primary" id="admin-login-btn">進入後台</button>
+        <p class="msg error" id="admin-login-msg"></p>
+    </div>
+</div>
+
+<!-- ── Admin Panel ─────────────────────────────────────────────────────── -->
+<div id="admin-panel">
+    <div class="admin-header">
+        <h1>🗺️ 管理員後台</h1>
+        <div style="display:flex;gap:8px">
+            <button class="logout-btn" id="change-pw-btn">修改密碼</button>
+            <button class="logout-btn" id="logout-btn">登出</button>
+        </div>
+    </div>
+    <div id="change-pw-box" style="display:none;background:#fff;border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08)">
+        <p style="font-weight:700;margin-bottom:8px">修改管理員密碼</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <input type="password" id="new-pw1" placeholder="新密碼" style="border:1.5px solid #ddd;border-radius:8px;padding:8px 12px;font-family:inherit;font-size:0.9rem;flex:1;min-width:140px">
+            <input type="password" id="new-pw2" placeholder="確認新密碼" style="border:1.5px solid #ddd;border-radius:8px;padding:8px 12px;font-family:inherit;font-size:0.9rem;flex:1;min-width:140px">
+            <input type="text" id="new-recovery" placeholder="復原密語（選填，更新忘記密碼用）" style="border:1.5px solid #ddd;border-radius:8px;padding:8px 12px;font-family:inherit;font-size:0.9rem;flex:2;min-width:200px">
+            <button class="btn btn-small" id="confirm-change-pw-btn">確認修改</button>
+        </div>
+        <p class="msg" id="change-pw-msg"></p>
+    </div>
+
+    <!-- Route selector -->
+    <div class="route-selector">
+        <span class="route-label">路線：</span>
+        <button class="route-btn active" data-route="auckland">🗺️ 奧克蘭 Queen St</button>
+        <button class="route-btn" data-route="viaduct">⚓ Viaduct Wynyard</button>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" data-tab="teams">隊伍管理</button>
+        <button class="tab" data-tab="leaderboard">排行榜</button>
+        <button class="tab" data-tab="feedback">意見回饋</button>
+    </div>
+
+    <!-- ── Teams Tab ── -->
+    <div id="tab-teams">
+        <!-- Create Team -->
+        <div class="card">
+            <h2>新增隊伍</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>隊伍名稱 *</label>
+                    <input type="text" id="new-team-name" placeholder="例：Dragon Team">
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="new-team-email" placeholder="player@email.com">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>密碼 *</label>
+                    <input type="text" id="new-team-pw" placeholder="4位數" maxlength="4" inputmode="numeric">
+                </div>
+                <div class="form-group">
+                    <label>到期日 <span style="font-weight:400;color:#888">（留空 = 登入後 48h 自動到期）</span></label>
+                    <input type="date" id="new-team-expiry">
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom:12px">
+                <label>系統建議密碼（點選其中一個）：</label>
+                <div class="pw-chips" id="pw-chips"></div>
+                <button class="gen-btn" id="regen-btn">🔄 重新產生</button>
+            </div>
+            <div class="form-group" style="margin-bottom:12px">
+                <label>路線</label>
+                <select id="new-team-route" class="route-select">
+                    <option value="auckland">奧克蘭 Queen St</option>
+                    <option value="viaduct">Viaduct Wynyard</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" id="create-team-btn">新增隊伍</button>
+            <p class="msg" id="create-msg"></p>
+        </div>
+
+        <!-- Team List -->
+        <div class="card">
+            <div class="section-title">
+                <h2>所有隊伍 <span id="live-indicator" style="font-size:0.8rem;font-weight:400;color:#2dc653"></span></h2>
+                <div class="btn-group">
+                    <button class="btn btn-outline" id="toggle-archived-btn">顯示已封存</button>
+                    <button class="btn btn-warning" id="archive-selected-btn" disabled>封存所選（<span id="team-selected-count">0</span>）</button>
+                    <button class="btn btn-danger" id="delete-selected-teams-btn" disabled>刪除所選</button>
+                    <button class="btn btn-small" id="refresh-teams-btn">重新整理</button>
+                </div>
+            </div>
+            <div id="teams-container"><p class="empty-state">載入中...</p></div>
+        </div>
+    </div>
+
+    <!-- ── Leaderboard Tab ── -->
+    <div id="tab-leaderboard" style="display:none">
+        <div class="card">
+            <div class="section-title">
+                <h2>🏆 排行榜</h2>
+                <div class="btn-group">
+                    <button class="btn btn-small" id="refresh-lb-btn">重新整理</button>
+                    <button class="btn btn-outline" id="export-csv-btn">匯出 CSV</button>
+                    <button class="btn btn-danger" id="clear-lb-btn">全部清除</button>
+                </div>
+            </div>
+            <div id="lb-container"><p class="empty-state">載入中...</p></div>
+        </div>
+    </div>
+
+    <!-- ── Feedback Tab ── -->
+    <div id="tab-feedback" style="display:none">
+        <div class="card">
+            <div class="section-title">
+                <h2>💬 意見回饋</h2>
+                <div class="btn-group">
+                    <button class="btn btn-small" id="refresh-fb-btn">重新整理</button>
+                    <button class="btn btn-outline" id="export-fb-csv-btn">匯出 CSV</button>
+                    <button class="btn btn-danger" id="delete-selected-fb-btn" disabled>刪除所選（<span id="fb-selected-count">0</span>）</button>
+                    <button class="btn btn-danger" id="clear-fb-btn">全部清除</button>
+                </div>
+            </div>
+            <div id="fb-container"><p class="empty-state">載入中...</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- ── Edit Team Modal ─────────────────────────────────────────────────── -->
+<div id="edit-modal" class="modal-backdrop hidden">
+    <div class="modal-box">
+        <h2>✏️ 編輯隊伍</h2>
+        <input type="hidden" id="edit-team-id">
+        <div class="form-row">
+            <div class="form-group">
+                <label>隊伍名稱</label>
+                <input type="text" id="edit-name">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="edit-email">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>密碼（4位數）</label>
+                <input type="text" id="edit-pw" maxlength="4" inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label>到期日</label>
+                <input type="date" id="edit-expiry">
+            </div>
+        </div>
+        <p class="msg" id="edit-msg"></p>
+        <div class="modal-actions">
+            <button class="btn btn-primary" id="save-edit-btn">儲存</button>
+            <button class="btn btn-outline" id="cancel-edit-btn" style="background:#f5f5f5;color:#444;border-color:#ddd">取消</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ── SHA-256 helper ─────────────────────────────────────────────────────
+    async function sha256(str) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // ── Admin Login Rate Limiting ──────────────────────────────────────────
+    const ADMIN_RL_KEY    = 'cityAdminAttempts';
+    const ADMIN_MAX_TRIES = 5;
+    const ADMIN_LOCK_MS   = 15 * 60 * 1000;
+
+    function getAdminRL()  { return JSON.parse(localStorage.getItem(ADMIN_RL_KEY) || '{}'); }
+    function adminLockedMins() {
+        const d = getAdminRL();
+        if (d.lockedUntil && Date.now() < d.lockedUntil)
+            return Math.ceil((d.lockedUntil - Date.now()) / 60000);
+        return 0;
+    }
+    function recordAdminFail() {
+        const d = getAdminRL();
+        const n = (d.attempts || 0) + 1;
+        localStorage.setItem(ADMIN_RL_KEY, JSON.stringify(
+            n >= ADMIN_MAX_TRIES ? { attempts: n, lockedUntil: Date.now() + ADMIN_LOCK_MS } : { attempts: n }
+        ));
+        return n;
+    }
+    function clearAdminRL() { localStorage.removeItem(ADMIN_RL_KEY); }
+
+    // ── Auto Logout (10 min inactivity) ───────────────────────────────────
+    let _idleTimer = null;
+    const IDLE_MS = 10 * 60 * 1000;
+    function resetIdleTimer() {
+        clearTimeout(_idleTimer);
+        _idleTimer = setTimeout(() => {
+            if (sessionStorage.getItem('adminAuth') === 'ok') {
+                sessionStorage.removeItem('adminAuth');
+                alert('已閒置超過 10 分鐘，自動登出');
+                location.reload();
+            }
+        }, IDLE_MS);
+    }
+    ['click','keydown','mousemove','touchstart'].forEach(ev =>
+        document.addEventListener(ev, resetIdleTimer, { passive: true })
+    );
+
+    // ── Admin Auth (SHA-256, stored in Firestore) ──────────────────────────
+    const ADMIN_HASH_KEY = 'cityAdminHash'; // localStorage offline cache only
+
+    async function getStoredHash() {
+        try {
+            const doc = await window.db.collection('config').doc('admin').get();
+            if (doc.exists && doc.data().passwordHash) {
+                localStorage.setItem(ADMIN_HASH_KEY, doc.data().passwordHash);
+                return doc.data().passwordHash;
+            }
+        } catch (e) {
+            return localStorage.getItem(ADMIN_HASH_KEY) || null; // offline fallback
+        }
+        return null;
+    }
+
+    async function checkAdminPassword(input) {
+        const stored = await getStoredHash();
+        if (!stored) return false;
+        return (await sha256(input)) === stored;
+    }
+
+    async function getRecoveryHash() {
+        try {
+            const doc = await window.db.collection('config').doc('admin').get();
+            return doc.exists ? (doc.data().recoveryHash || null) : null;
+        } catch (e) { return null; }
+    }
+
+    async function setAdminPassword(pw, recoveryPhrase) {
+        const hash = await sha256(pw);
+        const update = { passwordHash: hash };
+        if (recoveryPhrase) update.recoveryHash = await sha256(recoveryPhrase);
+        await window.db.collection('config').doc('admin').set(update, { merge: true });
+        localStorage.setItem(ADMIN_HASH_KEY, hash);
+    }
+
+    // ── Auth ───────────────────────────────────────────────────────────────
+
+    // Initial first-time setup (only when no hash exists)
+    function showSetupForm() {
+        document.getElementById('admin-login').innerHTML = `
+            <div class="admin-login-box">
+                <h1>🔐 設定管理員密碼</h1>
+                <p>首次使用，請設定密碼與復原密語</p>
+                <div class="form-group" style="text-align:left;margin-bottom:12px">
+                    <label>密碼 <span style="font-weight:400;color:#888">（至少 6 個字元）</span></label>
+                    <input type="password" id="setup-pw1" placeholder="輸入密碼">
+                </div>
+                <div class="form-group" style="text-align:left;margin-bottom:12px">
+                    <label>確認密碼</label>
+                    <input type="password" id="setup-pw2" placeholder="再次輸入密碼">
+                </div>
+                <div class="form-group" style="text-align:left;margin-bottom:16px">
+                    <label>復原密語 <span style="font-weight:400;color:#888">（忘記密碼時使用，請妥善保存）</span></label>
+                    <input type="text" id="setup-recovery" placeholder="例：我家狗狗叫小白123">
+                </div>
+                <button class="btn btn-primary" id="setup-btn">設定密碼</button>
+                <p class="msg error" id="setup-msg" style="margin-top:10px;font-size:0.88rem"></p>
+            </div>`;
+        document.getElementById('setup-btn').addEventListener('click', async () => {
+            const p1  = document.getElementById('setup-pw1').value;
+            const p2  = document.getElementById('setup-pw2').value;
+            const rec = document.getElementById('setup-recovery').value.trim();
+            const msg = document.getElementById('setup-msg');
+            const btn = document.getElementById('setup-btn');
+            if (!p1 || p1.length < 6) { msg.textContent = '密碼至少 6 個字元'; return; }
+            if (p1 !== p2)            { msg.textContent = '兩次密碼不一致'; return; }
+            if (!rec)                 { msg.textContent = '請設定復原密語'; return; }
+            btn.disabled = true; btn.textContent = '儲存中...';
+            try {
+                await setAdminPassword(p1, rec);
+                location.href = location.pathname;
+            } catch (e) {
+                msg.textContent = '儲存失敗：' + (e.message || '請檢查網路連線');
+                btn.disabled = false; btn.textContent = '設定密碼';
+            }
+        });
+    }
+
+    // Forgot-password recovery flow (via ?recover=1)
+    function showRecoverForm() {
+        document.getElementById('admin-login').innerHTML = `
+            <div class="admin-login-box">
+                <h1>🔑 忘記密碼</h1>
+                <p>輸入你設定時儲存的復原密語</p>
+                <div class="form-group" style="text-align:left;margin-bottom:16px">
+                    <label>復原密語</label>
+                    <input type="text" id="recover-phrase" placeholder="輸入復原密語">
+                </div>
+                <button class="btn btn-primary" id="verify-recover-btn">驗證</button>
+                <p class="msg error" id="recover-msg" style="margin-top:10px;font-size:0.88rem"></p>
+                <p style="margin-top:16px;font-size:0.8rem;color:#aaa">
+                    <a href="${location.pathname}" style="color:#0077b6">← 返回登入</a>
+                </p>
+            </div>`;
+        document.getElementById('verify-recover-btn').addEventListener('click', async () => {
+            const phrase = document.getElementById('recover-phrase').value.trim();
+            const msgEl  = document.getElementById('recover-msg');
+            const btn    = document.getElementById('verify-recover-btn');
+            if (!phrase) { msgEl.textContent = '請輸入復原密語'; return; }
+            btn.disabled = true; btn.textContent = '驗證中...';
+            const stored = await getRecoveryHash();
+            if (!stored) {
+                msgEl.textContent = '尚未設定復原密語，請直接登入 Firebase Console 刪除 config/admin 文件後重新設定';
+                btn.disabled = false; btn.textContent = '驗證';
+                return;
+            }
+            const ok = (await sha256(phrase)) === stored;
+            if (!ok) {
+                msgEl.textContent = '復原密語錯誤';
+                btn.disabled = false; btn.textContent = '驗證';
+                return;
+            }
+            // Phrase correct — show new password form
+            document.getElementById('admin-login').innerHTML = `
+                <div class="admin-login-box">
+                    <h1>🔐 設定新密碼</h1>
+                    <p>復原密語驗證成功，請設定新密碼</p>
+                    <div class="form-group" style="text-align:left;margin-bottom:12px">
+                        <label>新密碼</label>
+                        <input type="password" id="reset-pw1" placeholder="至少 6 個字元">
+                    </div>
+                    <div class="form-group" style="text-align:left;margin-bottom:16px">
+                        <label>確認新密碼</label>
+                        <input type="password" id="reset-pw2" placeholder="再次輸入密碼">
+                    </div>
+                    <button class="btn btn-primary" id="do-reset-btn">重設密碼</button>
+                    <p class="msg error" id="reset-msg" style="margin-top:10px;font-size:0.88rem"></p>
+                </div>`;
+            document.getElementById('do-reset-btn').addEventListener('click', async () => {
+                const p1 = document.getElementById('reset-pw1').value;
+                const p2 = document.getElementById('reset-pw2').value;
+                const m  = document.getElementById('reset-msg');
+                const b  = document.getElementById('do-reset-btn');
+                if (!p1 || p1.length < 6) { m.textContent = '密碼至少 6 個字元'; return; }
+                if (p1 !== p2)            { m.textContent = '兩次密碼不一致'; return; }
+                b.disabled = true; b.textContent = '儲存中...';
+                try {
+                    await setAdminPassword(p1); // keep existing recovery hash
+                    clearAdminRL();
+                    location.href = location.pathname;
+                } catch (e) {
+                    m.textContent = '儲存失敗'; b.disabled = false; b.textContent = '重設密碼';
+                }
+            });
+        });
+    }
+
+    (async () => {
+        if (sessionStorage.getItem('adminAuth') === 'ok') { showPanel(); return; }
+
+        const params     = new URLSearchParams(location.search);
+        const setupToken = params.get('setup');
+        const isRecover  = params.get('recover') === '1';
+        const hash       = await getStoredHash();
+
+        // ?recover=1 — recovery phrase flow
+        if (isRecover) { showRecoverForm(); return; }
+
+        // ?setup=cityAdmin2025 — ONLY for initial first-time setup (no hash)
+        if (setupToken === 'cityAdmin2025' && !hash) { showSetupForm(); return; }
+
+        // Has setup token but password already exists — ignore token, go to login
+        if (!hash) {
+            document.getElementById('admin-login').innerHTML = `
+                <div class="admin-login-box">
+                    <h1>🔒 無法存取</h1>
+                    <p style="color:#666;margin-top:8px">尚未設定管理員帳號，<br>請聯絡主辦人取得設定連結。</p>
+                </div>`;
+            return;
+        }
+
+        // Normal login with rate limiting
+        const msgEl = document.getElementById('admin-login-msg');
+
+        function updateLockMsg() {
+            const mins = adminLockedMins();
+            if (mins > 0) {
+                msgEl.textContent = `嘗試次數過多，請等待 ${mins} 分鐘後再試`;
+                document.getElementById('admin-login-btn').disabled = true;
+            } else {
+                if (msgEl.textContent.includes('等待')) msgEl.textContent = '';
+                document.getElementById('admin-login-btn').disabled = false;
+            }
+        }
+        updateLockMsg();
+        const lockInterval = setInterval(updateLockMsg, 10000);
+
+        const doLogin = async () => {
+            const mins = adminLockedMins();
+            if (mins > 0) { msgEl.textContent = `嘗試次數過多，請等待 ${mins} 分鐘後再試`; return; }
+            const input = document.getElementById('admin-pw-input').value;
+            const btn   = document.getElementById('admin-login-btn');
+            btn.disabled = true; btn.textContent = '驗證中...';
+            const ok = await checkAdminPassword(input);
+            if (ok) {
+                clearInterval(lockInterval);
+                clearAdminRL();
+                sessionStorage.setItem('adminAuth', 'ok');
+                showPanel();
+            } else {
+                const n    = recordAdminFail();
+                const left = ADMIN_MAX_TRIES - n;
+                msgEl.textContent = left > 0 ? `密碼錯誤（還可嘗試 ${left} 次）` : '已鎖定 15 分鐘，請稍後再試';
+                btn.disabled = false; btn.textContent = '進入後台';
+            }
+        };
+
+        document.getElementById('admin-pw-input').addEventListener('keypress', e => {
+            if (e.key === 'Enter') doLogin();
+        });
+        document.getElementById('admin-login-btn').addEventListener('click', doLogin);
+
+        document.querySelector('.admin-login-box').insertAdjacentHTML('beforeend',
+            `<p style="margin-top:16px;font-size:0.8rem;color:#aaa">
+                忘記密碼？前往 <a href="?recover=1" style="color:#0077b6">密碼復原頁面</a>
+            </p>`
+        );
+    })();
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        sessionStorage.removeItem('adminAuth');
+        location.reload();
+    });
+
+    document.getElementById('change-pw-btn').addEventListener('click', () => {
+        const box = document.getElementById('change-pw-box');
+        box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    });
+
+    document.getElementById('confirm-change-pw-btn').addEventListener('click', async () => {
+        const p1  = document.getElementById('new-pw1').value;
+        const p2  = document.getElementById('new-pw2').value;
+        const rec = document.getElementById('new-recovery').value.trim();
+        const msgEl = document.getElementById('change-pw-msg');
+        if (!p1 || p1.length < 6) { msgEl.className = 'msg error'; msgEl.textContent = '密碼至少 6 個字元'; return; }
+        if (p1 !== p2)            { msgEl.className = 'msg error'; msgEl.textContent = '兩次密碼不一致'; return; }
+        await setAdminPassword(p1, rec || undefined);
+        msgEl.className = 'msg success';
+        msgEl.textContent = rec ? '✓ 密碼與復原密語已更新' : '✓ 密碼已更新';
+        document.getElementById('new-pw1').value = '';
+        document.getElementById('new-pw2').value = '';
+        document.getElementById('new-recovery').value = '';
+        setTimeout(() => { document.getElementById('change-pw-box').style.display = 'none'; }, 1500);
+    });
+
+    function showPanel() {
+        document.getElementById('admin-login').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        generatePasswordSuggestions();
+        resetIdleTimer();
+        setTimeout(loadTeams, 0);
+    }
+
+    // ── Route selector ────────────────────────────────────────────────────
+    let currentRoute = 'auckland';
+
+    document.querySelectorAll('.route-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.route-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentRoute = btn.dataset.route;
+            // sync the create-team route dropdown
+            document.getElementById('new-team-route').value = currentRoute;
+            // reload whichever tab is active
+            const activeTab = document.querySelector('.tab.active')?.dataset.tab;
+            if (activeTab === 'teams')       loadTeams();
+            if (activeTab === 'leaderboard') loadLeaderboard();
+            if (activeTab === 'feedback')    loadFeedback();
+        });
+    });
+
+    // ── Tabs ───────────────────────────────────────────────────────────────
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById('tab-teams').style.display       = tab.dataset.tab === 'teams'       ? 'block' : 'none';
+            document.getElementById('tab-leaderboard').style.display = tab.dataset.tab === 'leaderboard' ? 'block' : 'none';
+            document.getElementById('tab-feedback').style.display    = tab.dataset.tab === 'feedback'    ? 'block' : 'none';
+            if (tab.dataset.tab === 'leaderboard') loadLeaderboard();
+            if (tab.dataset.tab === 'feedback')    loadFeedback();
+        });
+    });
+
+    // ── Password Generation ────────────────────────────────────────────────
+    function generateUniquePassword() {
+        const pool = [0,1,2,3,4,5,6,7,8,9];
+        const chosen = [];
+        while (chosen.length < 4) {
+            const idx = Math.floor(Math.random() * pool.length);
+            chosen.push(pool.splice(idx, 1)[0]);
+        }
+        if (chosen[0] === 0) {
+            const swap = chosen.findIndex((d, i) => i > 0 && d !== 0);
+            if (swap > 0) [chosen[0], chosen[swap]] = [chosen[swap], chosen[0]];
+        }
+        return chosen.join('');
+    }
+
+    function generatePasswordSuggestions() {
+        const chips = document.getElementById('pw-chips');
+        chips.innerHTML = '';
+        const pws = new Set();
+        while (pws.size < 4) pws.add(generateUniquePassword());
+        pws.forEach(pw => {
+            const chip = document.createElement('button');
+            chip.className = 'pw-chip';
+            chip.textContent = pw;
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.pw-chip').forEach(c => c.classList.remove('selected'));
+                chip.classList.add('selected');
+                document.getElementById('new-team-pw').value = pw;
+            });
+            chips.appendChild(chip);
+        });
+    }
+    document.getElementById('regen-btn').addEventListener('click', generatePasswordSuggestions);
+
+    // ── Create Team ────────────────────────────────────────────────────────
+    document.getElementById('create-team-btn').addEventListener('click', createTeam);
+
+    async function createTeam() {
+        const name   = document.getElementById('new-team-name').value.trim();
+        const email  = document.getElementById('new-team-email').value.trim();
+        const pw     = document.getElementById('new-team-pw').value.trim();
+        const expiry = document.getElementById('new-team-expiry').value;
+        const msgEl  = document.getElementById('create-msg');
+        const btn    = document.getElementById('create-team-btn');
+
+        msgEl.className = 'msg';
+        msgEl.textContent = '';
+
+        if (!name || !email || !pw) {
+            msgEl.className = 'msg error';
+            msgEl.textContent = '請填寫隊伍名稱、Email 和密碼';
+            return;
+        }
+        if (!/^\d{4}$/.test(pw)) {
+            msgEl.className = 'msg error';
+            msgEl.textContent = '密碼必須是4位數字';
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '新增中...';
+
+        try {
+            const existing = await window.db.collection('teams').where('name', '==', name).get();
+            if (!existing.empty) {
+                msgEl.className = 'msg error';
+                msgEl.textContent = '此隊伍名稱已存在';
+                btn.disabled = false; btn.textContent = '新增隊伍';
+                return;
+            }
+            const routeVal = document.getElementById('new-team-route').value || currentRoute;
+            const newTeam = { name, email, password: pw, route: routeVal, createdAt: new Date().toISOString() };
+            if (expiry) newTeam.expiresAt = expiry;
+            await window.db.collection('teams').add(newTeam);
+            msgEl.className = 'msg success';
+            msgEl.textContent = expiry
+                ? `✓ 「${name}」已建立，密碼：${pw}，到期：${expiry}`
+                : `✓ 「${name}」已建立，密碼：${pw}（登入後 48h 自動到期）`;
+            document.getElementById('new-team-name').value = '';
+            document.getElementById('new-team-email').value = '';
+            document.getElementById('new-team-pw').value = '';
+            document.querySelectorAll('.pw-chip').forEach(c => c.classList.remove('selected'));
+            generatePasswordSuggestions();
+            loadTeams();
+        } catch (err) {
+            console.error(err);
+            msgEl.className = 'msg error';
+            msgEl.textContent = '建立失敗，請稍後再試';
+        }
+        btn.disabled = false; btn.textContent = '新增隊伍';
+    }
+
+    // ── Load Teams (with live RTDB level) ─────────────────────────────────
+    document.getElementById('refresh-teams-btn').addEventListener('click', loadTeams);
+    let rtdbListeners = {};
+    let showArchivedTeams = false;
+
+    document.getElementById('toggle-archived-btn').addEventListener('click', () => {
+        showArchivedTeams = !showArchivedTeams;
+        document.getElementById('toggle-archived-btn').textContent = showArchivedTeams ? '隱藏已封存' : '顯示已封存';
+        loadTeams();
+    });
+
+    document.getElementById('archive-selected-btn').addEventListener('click', async () => {
+        const checked = [...document.querySelectorAll('.team-check:checked')];
+        if (!checked.length) return;
+        if (!confirm(`確定要封存 ${checked.length} 個隊伍嗎？封存後可從「顯示已封存」找回。`)) return;
+        const btn = document.getElementById('archive-selected-btn');
+        btn.disabled = true;
+        try {
+            const batch = window.db.batch();
+            checked.forEach(cb => batch.update(window.db.collection('teams').doc(cb.dataset.id), { archived: true }));
+            await batch.commit();
+            loadTeams();
+        } catch (e) { alert('封存失敗'); console.error(e); }
+        btn.disabled = false;
+    });
+
+    document.getElementById('delete-selected-teams-btn').addEventListener('click', async () => {
+        const checked = [...document.querySelectorAll('.team-check:checked')];
+        if (!checked.length) return;
+        if (!confirm(`確定要永久刪除 ${checked.length} 個隊伍嗎？此操作無法復原！`)) return;
+        const btn = document.getElementById('delete-selected-teams-btn');
+        btn.disabled = true;
+        try {
+            const batch = window.db.batch();
+            checked.forEach(cb => batch.delete(window.db.collection('teams').doc(cb.dataset.id)));
+            await batch.commit();
+            checked.forEach(cb => window.rtdb.ref(`game_state/${cb.dataset.id}`).remove());
+            loadTeams();
+        } catch (e) { alert('刪除失敗'); console.error(e); }
+        btn.disabled = false;
+    });
+
+    function updateTeamSelectBtns() {
+        const count = document.querySelectorAll('.team-check:checked').length;
+        document.getElementById('team-selected-count').textContent = count;
+        document.getElementById('archive-selected-btn').disabled     = count === 0;
+        document.getElementById('delete-selected-teams-btn').disabled = count === 0;
+    }
+
+    async function loadTeams() {
+        const container = document.getElementById('teams-container');
+        container.innerHTML = '<p class="empty-state">載入中...</p>';
+        document.getElementById('team-selected-count').textContent = '0';
+        document.getElementById('archive-selected-btn').disabled     = true;
+        document.getElementById('delete-selected-teams-btn').disabled = true;
+
+        Object.values(rtdbListeners).forEach(ref => ref.off());
+        rtdbListeners = {};
+
+        try {
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('timeout')), 10000)
+            );
+            const snapshot = await Promise.race([
+                window.db.collection('teams').orderBy('createdAt', 'asc').get(),
+                timeoutPromise
+            ]);
+
+            const docs = snapshot.docs.filter(doc => {
+                const d = doc.data();
+                const routeMatch = currentRoute === 'auckland'
+                    ? (!d.route || d.route === 'auckland')
+                    : d.route === currentRoute;
+                const archiveMatch = showArchivedTeams ? d.archived : !d.archived;
+                return routeMatch && archiveMatch;
+            });
+
+            if (docs.length === 0) {
+                container.innerHTML = `<p class="empty-state">${showArchivedTeams ? '沒有已封存的隊伍' : '尚無隊伍'}</p>`;
+                return;
+            }
+
+            const today = new Date().toISOString().split('T')[0];
+
+            let html = `
+                <div style="overflow-x:auto">
+                <table class="data-table">
+                    <thead><tr>
+                        <th><input type="checkbox" id="team-select-all" title="全選"></th>
+                        <th>#</th>
+                        <th>隊伍名稱</th>
+                        <th>Email</th>
+                        <th>密碼</th>
+                        <th>到期日</th>
+                        <th>目前關卡</th>
+                        <th>操作</th>
+                    </tr></thead>
+                    <tbody id="teams-tbody">
+            `;
+
+            docs.forEach((doc, i) => {
+                const d = doc.data();
+                let expiryHtml;
+                if (d.gameCompleted) {
+                    expiryHtml = '<span class="level-badge done">🎉 已完成</span>';
+                } else if (d.expiresAt && String(d.expiresAt).includes('T')) {
+                    const minsLeft = Math.ceil((new Date(d.expiresAt) - Date.now()) / 60000);
+                    if (minsLeft <= 0) {
+                        expiryHtml = '<span class="expiry-exp">已過期</span>';
+                    } else {
+                        const h = Math.floor(minsLeft / 60), m = minsLeft % 60;
+                        expiryHtml = `<span class="${h < 4 ? 'expiry-warn' : 'expiry-ok'}">剩 ${h}h${m ? ' '+m+'m' : ''}</span>`;
+                    }
+                } else if (d.expiresAt) {
+                    const daysLeft = Math.ceil((new Date(d.expiresAt) - new Date(today)) / 86400000);
+                    const cls = daysLeft < 0 ? 'expiry-exp' : daysLeft <= 1 ? 'expiry-warn' : 'expiry-ok';
+                    const label = daysLeft < 0 ? '已過期' : daysLeft === 0 ? '今天到期' : `${d.expiresAt} (${daysLeft}天)`;
+                    expiryHtml = `<span class="${cls}">${label}</span>`;
+                } else {
+                    expiryHtml = '<span style="color:#aaa;font-size:0.8rem">未登入（自動48h）</span>';
+                }
+
+                const archiveBtn = d.archived
+                    ? `<button class="btn btn-outline" onclick="unarchiveTeam('${doc.id}','${escapeHtml(d.name)}')">取消封存</button>`
+                    : `<button class="btn btn-warning" onclick="archiveTeam('${doc.id}','${escapeHtml(d.name)}')">封存</button>`;
+
+                html += `
+                    <tr id="team-row-${doc.id}" style="${d.archived ? 'opacity:0.6' : ''}">
+                        <td><input type="checkbox" class="team-check" data-id="${doc.id}" onchange="updateTeamSelectBtns()"></td>
+                        <td>${i + 1}</td>
+                        <td><strong>${escapeHtml(d.name)}</strong></td>
+                        <td style="font-size:0.82rem">${escapeHtml(d.email || '—')}</td>
+                        <td><span class="pw-display">${escapeHtml(d.password)}</span></td>
+                        <td>${expiryHtml}</td>
+                        <td><span id="level-${doc.id}" class="level-badge">—</span></td>
+                        <td>
+                            <div style="display:flex;gap:4px;flex-wrap:wrap">
+                                <button class="btn btn-small" onclick="openEditModal('${doc.id}','${escapeHtml(d.name)}','${escapeHtml(d.email||'')}','${d.password}','${d.expiresAt||''}')">編輯</button>
+                                <button class="btn btn-warning" onclick="resetProgress('${doc.id}','${escapeHtml(d.name)}')">重置</button>
+                                ${archiveBtn}
+                                <button class="btn btn-danger" onclick="deleteTeam('${doc.id}','${escapeHtml(d.name)}')">刪除</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+
+            document.getElementById('team-select-all').addEventListener('change', function() {
+                document.querySelectorAll('.team-check').forEach(cb => cb.checked = this.checked);
+                updateTeamSelectBtns();
+            });
+
+            document.getElementById('live-indicator').innerHTML = '<span style="color:#2dc653">● 即時監控中</span>';
+            docs.forEach(doc => {
+                const ref = window.rtdb.ref(`game_state/${doc.id}`);
+                ref.on('value', snap => {
+                    const el = document.getElementById(`level-${doc.id}`);
+                    if (!el) return;
+                    const data = snap.val();
+                    if (data && typeof data.currentLevel === 'number') {
+                        const lvl = data.currentLevel;
+                        el.textContent = lvl >= 10 ? '🎉 完成' : `第 ${lvl + 1} 關`;
+                        el.className = 'level-badge' + (lvl >= 10 ? ' done' : '');
+                    } else {
+                        el.textContent = '未開始';
+                        el.className = 'level-badge';
+                    }
+                });
+                rtdbListeners[doc.id] = ref;
+            });
+
+        } catch (err) {
+            console.error(err);
+            const msg = err.message === 'timeout' ? '載入超時' : '載入失敗';
+            container.innerHTML = `<p class="empty-state" style="color:#c00">${msg}，請點選右上角「重新整理」</p>`;
+        }
+    }
+
+    async function archiveTeam(id, name) {
+        if (!confirm(`確定要封存「${name}」嗎？\n封存後可從「顯示已封存」找回。`)) return;
+        try {
+            await window.db.collection('teams').doc(id).update({ archived: true });
+            loadTeams();
+        } catch (e) { alert('封存失敗'); }
+    }
+
+    async function unarchiveTeam(id, name) {
+        if (!confirm(`確定要取消封存「${name}」嗎？`)) return;
+        try {
+            await window.db.collection('teams').doc(id).update({ archived: false });
+            loadTeams();
+        } catch (e) { alert('操作失敗'); }
+    }
+
+    // ── Edit Modal ─────────────────────────────────────────────────────────
+    function openEditModal(id, name, email, pw, expiry) {
+        document.getElementById('edit-team-id').value  = id;
+        document.getElementById('edit-name').value     = name;
+        document.getElementById('edit-email').value    = email;
+        document.getElementById('edit-pw').value       = pw;
+        document.getElementById('edit-expiry').value   = expiry;
+        document.getElementById('edit-msg').textContent = '';
+        document.getElementById('edit-modal').classList.remove('hidden');
+    }
+
+    document.getElementById('cancel-edit-btn').addEventListener('click', () => {
+        document.getElementById('edit-modal').classList.add('hidden');
+    });
+    document.getElementById('edit-modal').addEventListener('click', e => {
+        if (e.target === document.getElementById('edit-modal'))
+            document.getElementById('edit-modal').classList.add('hidden');
+    });
+
+    document.getElementById('save-edit-btn').addEventListener('click', async () => {
+        const id     = document.getElementById('edit-team-id').value;
+        const name   = document.getElementById('edit-name').value.trim();
+        const email  = document.getElementById('edit-email').value.trim();
+        const pw     = document.getElementById('edit-pw').value.trim();
+        const expiry = document.getElementById('edit-expiry').value;
+        const msgEl  = document.getElementById('edit-msg');
+
+        if (!name || !email || !pw || !expiry) {
+            msgEl.className = 'msg error'; msgEl.textContent = '請填寫所有欄位'; return;
+        }
+        if (!/^\d{4}$/.test(pw)) {
+            msgEl.className = 'msg error'; msgEl.textContent = '密碼必須是4位數字'; return;
+        }
+
+        const btn = document.getElementById('save-edit-btn');
+        btn.disabled = true; btn.textContent = '儲存中...';
+
+        try {
+            const existing = await window.db.collection('teams').where('name', '==', name).get();
+            const conflict = existing.docs.find(d => d.id !== id);
+            if (conflict) {
+                msgEl.className = 'msg error'; msgEl.textContent = '此隊伍名稱已被其他隊伍使用';
+                btn.disabled = false; btn.textContent = '儲存';
+                return;
+            }
+            await window.db.collection('teams').doc(id).update({ name, email, password: pw, expiresAt: expiry });
+            document.getElementById('edit-modal').classList.add('hidden');
+            loadTeams();
+        } catch (err) {
+            console.error(err);
+            msgEl.className = 'msg error'; msgEl.textContent = '儲存失敗';
+        }
+        btn.disabled = false; btn.textContent = '儲存';
+    });
+
+    // ── Reset Progress ─────────────────────────────────────────────────────
+    async function resetProgress(teamId, teamName) {
+        if (!confirm(`確定要重置「${teamName}」的遊戲進度嗎？\n（會清除他們在第幾關的紀錄，但不影響排行榜）`)) return;
+        try {
+            await window.rtdb.ref(`game_state/${teamId}`).remove();
+            alert(`✓ 「${teamName}」的進度已重置`);
+        } catch (err) {
+            alert('重置失敗');
+            console.error(err);
+        }
+    }
+
+    // ── Delete Team ────────────────────────────────────────────────────────
+    async function deleteTeam(id, name) {
+        if (!confirm(`確定要刪除隊伍「${name}」嗎？\n（此操作無法復原）`)) return;
+        try {
+            await window.db.collection('teams').doc(id).delete();
+            await window.rtdb.ref(`game_state/${id}`).remove();
+            loadTeams();
+        } catch (err) { alert('刪除失敗'); console.error(err); }
+    }
+
+    // ── Leaderboard ────────────────────────────────────────────────────────
+    document.getElementById('refresh-lb-btn').addEventListener('click', loadLeaderboard);
+
+    document.getElementById('clear-lb-btn').addEventListener('click', async () => {
+        if (!confirm('確定要清除所有排行榜紀錄嗎？此操作無法復原！')) return;
+        const btn = document.getElementById('clear-lb-btn');
+        btn.disabled = true; btn.textContent = '清除中...';
+        try {
+            const snapshot = await window.db.collection('leaderboard').get();
+            const batch = window.db.batch();
+            snapshot.docs.forEach(doc => batch.delete(doc.ref));
+            await batch.commit();
+            loadLeaderboard();
+        } catch (err) { alert('清除失敗'); console.error(err); }
+        btn.disabled = false; btn.textContent = '全部清除';
+    });
+
+    document.getElementById('export-csv-btn').addEventListener('click', exportCSV);
+
+    async function loadLeaderboard() {
+        const container = document.getElementById('lb-container');
+        container.innerHTML = '<p class="empty-state">載入中...</p>';
+        try {
+            const snapshot = await window.db.collection('leaderboard').orderBy('timeMins', 'asc').get();
+            const filteredLb = snapshot.docs.filter(doc => {
+                const d = doc.data();
+                return currentRoute === 'auckland'
+                    ? (!d.route || d.route === 'auckland')
+                    : d.route === currentRoute;
+            });
+            if (filteredLb.length === 0) { container.innerHTML = '<p class="empty-state">尚無破關紀錄</p>'; return; }
+
+            const medals = ['🥇','🥈','🥉'];
+            let html = `<div style="overflow-x:auto"><table class="data-table">
+                <thead><tr><th>排名</th><th>隊伍</th><th>完成時間</th><th>提示次數</th><th>日期</th><th>操作</th></tr></thead>
+                <tbody>`;
+
+            filteredLb.forEach((doc, i) => {
+                const d = doc.data();
+                html += `<tr>
+                    <td>${medals[i] || (i+1)+'.'}</td>
+                    <td><strong>${escapeHtml(d.teamName||'—')}</strong></td>
+                    <td style="font-family:monospace;font-weight:700">${escapeHtml(d.timeStr||d.timeMins+'m')}</td>
+                    <td>${d.hintCount||0}</td>
+                    <td>${d.date||'—'}</td>
+                    <td><button class="btn btn-danger" onclick="deleteLbRecord('${doc.id}')">刪除</button></td>
+                </tr>`;
+            });
+
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        } catch (err) {
+            console.error(err);
+            container.innerHTML = '<p class="empty-state" style="color:red">載入失敗 — 請先在 console 建立索引</p>';
+        }
+    }
+
+    async function deleteLbRecord(id) {
+        if (!confirm('確定要刪除這筆紀錄嗎？')) return;
+        try {
+            await window.db.collection('leaderboard').doc(id).delete();
+            loadLeaderboard();
+        } catch (err) { alert('刪除失敗'); console.error(err); }
+    }
+
+    async function exportCSV() {
+        try {
+            const snapshot = await window.db.collection('leaderboard').orderBy('timeMins', 'asc').get();
+            const rows = [['排名','隊伍名稱','完成時間','提示次數','日期']];
+            snapshot.docs.forEach((doc, i) => {
+                const d = doc.data();
+                rows.push([i+1, d.teamName||'', d.timeStr||d.timeMins+'m', d.hintCount||0, d.date||'']);
+            });
+            const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+            const blob = new Blob(['\uFEFF'+csv], { type: 'text/csv;charset=utf-8;' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `leaderboard_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        } catch (err) { alert('匯出失敗'); console.error(err); }
+    }
+
+    // ── Feedback ───────────────────────────────────────────────────────────
+    document.getElementById('refresh-fb-btn').addEventListener('click', loadFeedback);
+
+    document.getElementById('export-fb-csv-btn').addEventListener('click', async () => {
+        try {
+            const snapshot = await window.db.collection('feedback').orderBy('timestamp', 'desc').get();
+            const rows = [['日期','隊伍','完成時間','內容']];
+            snapshot.docs.forEach(doc => {
+                const d = doc.data();
+                rows.push([d.date||'', d.teamName||'', d.timeStr||'', d.message||'']);
+            });
+            const csv  = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+            const blob = new Blob(['﻿'+csv], { type: 'text/csv;charset=utf-8;' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `feedback_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        } catch (err) { alert('匯出失敗'); console.error(err); }
+    });
+
+    document.getElementById('delete-selected-fb-btn').addEventListener('click', async () => {
+        const checked = [...document.querySelectorAll('.fb-check:checked')];
+        if (!checked.length) return;
+        if (!confirm(`確定要刪除 ${checked.length} 筆回饋嗎？此操作無法復原！`)) return;
+        const btn = document.getElementById('delete-selected-fb-btn');
+        btn.disabled = true;
+        try {
+            const batch = window.db.batch();
+            checked.forEach(cb => batch.delete(window.db.collection('feedback').doc(cb.dataset.id)));
+            await batch.commit();
+            loadFeedback();
+        } catch (err) { alert('刪除失敗'); console.error(err); }
+        btn.disabled = false;
+    });
+
+    document.getElementById('clear-fb-btn').addEventListener('click', async () => {
+        if (!confirm('確定要清除所有意見回饋嗎？此操作無法復原！')) return;
+        const btn = document.getElementById('clear-fb-btn');
+        btn.disabled = true; btn.textContent = '清除中...';
+        try {
+            const snapshot = await window.db.collection('feedback').get();
+            const batch = window.db.batch();
+            snapshot.docs.forEach(doc => batch.delete(doc.ref));
+            await batch.commit();
+            loadFeedback();
+        } catch (err) { alert('清除失敗'); console.error(err); }
+        btn.disabled = false; btn.textContent = '全部清除';
+    });
+
+    function updateFbDeleteBtn() {
+        const count = document.querySelectorAll('.fb-check:checked').length;
+        const btn   = document.getElementById('delete-selected-fb-btn');
+        document.getElementById('fb-selected-count').textContent = count;
+        btn.disabled = count === 0;
+    }
+
+    async function loadFeedback() {
+        const container = document.getElementById('fb-container');
+        container.innerHTML = '<p class="empty-state">載入中...</p>';
+        document.getElementById('fb-selected-count').textContent = '0';
+        document.getElementById('delete-selected-fb-btn').disabled = true;
+        try {
+            const snapshot = await window.db.collection('feedback').orderBy('timestamp', 'desc').get();
+            const filteredFb = snapshot.docs.filter(doc => {
+                const d = doc.data();
+                return currentRoute === 'auckland'
+                    ? (!d.route || d.route === 'auckland')
+                    : d.route === currentRoute;
+            });
+            if (filteredFb.length === 0) { container.innerHTML = '<p class="empty-state">尚無意見回饋</p>'; return; }
+
+            let html = `<div style="overflow-x:auto"><table class="data-table">
+                <thead><tr>
+                    <th><input type="checkbox" id="fb-select-all" title="全選"></th>
+                    <th>日期</th><th>隊伍</th><th>完成時間</th><th>內容</th><th>操作</th>
+                </tr></thead><tbody>`;
+            filteredFb.forEach(doc => {
+                const d = doc.data();
+                html += `<tr>
+                    <td><input type="checkbox" class="fb-check" data-id="${doc.id}" onchange="updateFbDeleteBtn()"></td>
+                    <td style="white-space:nowrap">${d.date||'—'}</td>
+                    <td><strong>${escapeHtml(d.teamName||'—')}</strong></td>
+                    <td>${escapeHtml(d.timeStr||'—')}</td>
+                    <td style="max-width:280px;word-break:break-word">${escapeHtml(d.message||'')}</td>
+                    <td><button class="btn btn-danger" onclick="deleteFbRecord('${doc.id}')">刪除</button></td>
+                </tr>`;
+            });
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+
+            document.getElementById('fb-select-all').addEventListener('change', function() {
+                document.querySelectorAll('.fb-check').forEach(cb => cb.checked = this.checked);
+                updateFbDeleteBtn();
+            });
+        } catch (err) {
+            console.error(err);
+            container.innerHTML = '<p class="empty-state" style="color:red">載入失敗</p>';
+        }
+    }
+
+    async function deleteFbRecord(id) {
+        if (!confirm('確定要刪除這筆回饋嗎？')) return;
+        try {
+            await window.db.collection('feedback').doc(id).delete();
+            loadFeedback();
+        } catch (err) { alert('刪除失敗'); console.error(err); }
+    }
+
+    // ── Helpers ────────────────────────────────────────────────────────────
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+</script>
+</body>
+</html>

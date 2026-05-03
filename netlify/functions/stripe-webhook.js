@@ -62,7 +62,7 @@ exports.handler = async (event) => {
     email:     email,
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
     stripeSessionId: sessionId,
-    route:     'auckland-queen-st'
+    route:     'auckland'
   });
 
   // Send email via Resend
