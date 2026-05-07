@@ -548,7 +548,7 @@ document.querySelectorAll('.route-pill').forEach(pill =>
 document.querySelectorAll('[data-book-route]').forEach(btn =>
   btn.addEventListener('click', e => {
     e.preventDefault();
-    selectRoute(btn.dataset.route);
+    selectRoute(btn.dataset.bookRoute);
     document.getElementById('book').scrollIntoView({ behavior: 'smooth' });
   })
 );
