@@ -11,6 +11,7 @@ function setLang(l) {
   lang = l;
   document.documentElement.lang = l === 'tw' ? 'zh-TW' : 'en';
   document.getElementById('lang-toggle').textContent = l === 'tw' ? 'English' : '中文';
+  if (window.__onLangChange) window.__onLangChange(l);
 
   document.querySelectorAll('[data-en]').forEach(el => {
     const text = el.getAttribute(`data-${l}`) || el.getAttribute('data-en');
@@ -114,7 +115,7 @@ document.getElementById('book-form').addEventListener('submit', async e => {
     const res = await fetch('/.netlify/functions/create-checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ teamName, email, promoCode, lang })
+      body: JSON.stringify({ teamName, email, promoCode, lang, route: document.getElementById('selected-route')?.value || 'queenst' })
     });
     const data = await res.json();
 
