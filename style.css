@@ -282,7 +282,7 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.2; }
   box-shadow: var(--shadow);
   transition: transform 0.2s, box-shadow 0.2s;
 }
-.route-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.route-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--accent, var(--teal)); }
 
 .route-card-img {
   height: 185px; position: relative;
