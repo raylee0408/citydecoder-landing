@@ -233,10 +233,11 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.2; }
 }
 .why-card {
   background: var(--teal-bg);
-  border: 1.5px solid var(--border);
+  border: 2px solid rgba(0,188,212,0.35);
   border-radius: var(--r-lg); padding: 32px 26px;
   transition: transform 0.2s, box-shadow 0.2s;
 }
+.why-card:hover { border-color: rgba(0,188,212,0.65); }
 .why-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
 .why-icon { font-size: 2.4rem; margin-bottom: 14px; }
 .why-card h3 { font-size: 1.05rem; color: var(--teal-d); margin-bottom: 8px; }
@@ -322,6 +323,16 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.2; }
   padding: 3px 11px; border-radius: 50px;
 }
 
+/* Route endpoints */
+.route-endpoints {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 4px;
+  background: var(--teal-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 7px 12px; margin-bottom: 12px;
+  font-size: 0.76rem; color: var(--teal-d);
+}
+.ep-start, .ep-end { font-weight: 600; }
+.ep-divider { color: var(--teal); font-weight: 700; margin: 0 2px; flex-shrink: 0; }
+
 /* Route mini map */
 .route-mini-map {
   background: var(--teal-bg); border: 1px solid var(--border);
@@ -367,7 +378,7 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.2; }
 .compare-table tbody td {
   padding: 13px 20px; text-align: center;
   font-size: 0.9rem; color: var(--text);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1.5px solid rgba(0,188,212,0.25);
 }
 .compare-table tbody td:first-child {
   text-align: left; font-weight: 600; color: var(--muted);

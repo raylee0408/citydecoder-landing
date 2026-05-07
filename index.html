@@ -85,7 +85,7 @@
 
     <!-- Slide 3: Christchurch -->
     <div class="hero-slide" style="--accent:#F5A623;--accent-d:#E65100">
-      <div class="hero-slide-bg hero-slide-bg--chch"></div>
+      <div class="hero-slide-bg" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Trams_Christchurch_and_Regent_Theatre.jpg/960px-Trams_Christchurch_and_Regent_Theatre.jpg')"></div>
       <div class="hero-slide-overlay"></div>
       <div class="hero-slide-content">
         <div class="hero-city-tag">🇳🇿 Christchurch</div>
@@ -186,63 +186,51 @@
 
       <!-- Queen St -->
       <div class="route-card">
-        <div class="route-card-img" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Civic_Theatre%2C_Auckland.jpg/960px-Civic_Theatre%2C_Auckland.jpg')">
+        <div class="route-card-img" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Britomart_Transport_Centre%2C_Auckland.jpg/960px-Britomart_Transport_Centre%2C_Auckland.jpg')">
           <div class="route-card-overlay"></div>
-          <div class="route-city-tag">🇳🇿 Auckland</div>
+          <div class="route-city-tag">Auckland</div>
           <div class="route-card-emoji">🏙️</div>
         </div>
         <div class="route-card-body">
           <div class="route-accent-bar" style="background:#FF7043"></div>
           <h3 class="route-name" data-en="Queen St Explorer" data-tw="女王街探索者">Queen St Explorer</h3>
           <p class="route-desc" data-en="From the waterfront to the heart of the CBD — uncover the hidden stories behind Auckland's most iconic landmarks." data-tw="從海濱到市中心，揭開奧克蘭最具代表性地標背後的隱藏故事。">From the waterfront to the heart of the CBD — uncover the hidden stories behind Auckland's most iconic landmarks.</p>
+          <div class="route-endpoints">
+            <span class="ep-start" data-en="Start: Northern Steamship Building" data-tw="起點：北方輪船公司大樓">Start: Northern Steamship Building</span>
+            <span class="ep-divider">→</span>
+            <span class="ep-end" data-en="End: Auckland Town Hall" data-tw="終點：奧克蘭市政廳">End: Auckland Town Hall</span>
+          </div>
           <div class="route-stats">
             <span>📍 10 <span data-en="Puzzles" data-tw="關卡">Puzzles</span></span>
             <span>🚶 1.45 km</span>
             <span>⏱️ ~1 <span data-en="hr" data-tw="小時">hr</span></span>
             <span>👥 1–6</span>
           </div>
-          <div class="route-mini-map">
-            <svg viewBox="0 0 200 56" fill="none">
-              <path d="M8 46 C22 46 32 22 52 18 C72 14 82 32 102 26 C122 20 134 8 154 12 C170 15 182 24 192 18" stroke="#FF7043" stroke-width="2.5" stroke-dasharray="6 3" stroke-linecap="round"/>
-              <circle cx="8"   cy="46" r="5" fill="#FF7043"/>
-              <circle cx="52"  cy="18" r="3.5" fill="#FF7043" opacity=".5"/>
-              <circle cx="102" cy="26" r="3.5" fill="#FF7043" opacity=".5"/>
-              <circle cx="154" cy="12" r="3.5" fill="#FF7043" opacity=".5"/>
-              <circle cx="192" cy="18" r="5" fill="#FF7043"/>
-            </svg>
-            <span class="route-mini-label" data-en="1.45 km · 10 stops" data-tw="1.45 公里 · 10 站">1.45 km · 10 stops</span>
-          </div>
           <button class="btn-book-route" data-book-route="queenst" style="background:#FF7043" data-en="Book This Route →" data-tw="預訂此路線 →">Book This Route →</button>
         </div>
       </div>
 
-      <!-- Viaduct -->
+      <!-- Waterfront (Viaduct) -->
       <div class="route-card">
         <div class="route-card-img" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Auckland_skyline_from_Viaduct_Harbour.jpg/960px-Auckland_skyline_from_Viaduct_Harbour.jpg')">
           <div class="route-card-overlay"></div>
-          <div class="route-city-tag">🇳🇿 Auckland</div>
+          <div class="route-city-tag">Auckland</div>
           <div class="route-card-emoji">⛵</div>
         </div>
         <div class="route-card-body">
           <div class="route-accent-bar" style="background:#FF5C5C"></div>
-          <h3 class="route-name" data-en="Viaduct → Wynyard" data-tw="維阿達克 → 溫雅德">Viaduct → Wynyard</h3>
+          <h3 class="route-name" data-en="Waterfront" data-tw="海濱路線">Waterfront</h3>
           <p class="route-desc" data-en="Explore Auckland's vibrant waterfront — from the America's Cup village to the creative Wynyard Quarter." data-tw="探索奧克蘭充滿活力的海濱，從美洲盃村到充滿創意的溫雅德區。">Explore Auckland's vibrant waterfront — from the America's Cup village to the creative Wynyard Quarter.</p>
+          <div class="route-endpoints">
+            <span class="ep-start" data-en="Start: The Cloud" data-tw="起點：雲朵活動中心">Start: The Cloud</span>
+            <span class="ep-divider">→</span>
+            <span class="ep-end" data-en="End: Silo Park" data-tw="終點：筒倉公園">End: Silo Park</span>
+          </div>
           <div class="route-stats">
             <span>📍 10 <span data-en="Puzzles" data-tw="關卡">Puzzles</span></span>
             <span>🚶 ~2 km</span>
             <span>⏱️ ~1 <span data-en="hr" data-tw="小時">hr</span></span>
             <span>👥 1–6</span>
-          </div>
-          <div class="route-mini-map">
-            <svg viewBox="0 0 200 56" fill="none">
-              <path d="M8 44 C20 44 28 28 48 22 C68 16 78 34 98 28 C118 22 130 12 150 18 C166 22 178 34 192 28" stroke="#FF5C5C" stroke-width="2.5" stroke-dasharray="6 3" stroke-linecap="round"/>
-              <circle cx="8"   cy="44" r="5" fill="#FF5C5C"/>
-              <circle cx="48"  cy="22" r="3.5" fill="#FF5C5C" opacity=".5"/>
-              <circle cx="98"  cy="28" r="3.5" fill="#FF5C5C" opacity=".5"/>
-              <circle cx="150" cy="18" r="3.5" fill="#FF5C5C" opacity=".5"/>
-              <circle cx="192" cy="28" r="5" fill="#FF5C5C"/>
-            </svg>
-            <span class="route-mini-label" data-en="~2.0 km · 10 stops" data-tw="約 2 公里 · 10 站">~2.0 km · 10 stops</span>
           </div>
           <button class="btn-book-route" data-book-route="viaduct" style="background:#FF5C5C" data-en="Book This Route →" data-tw="預訂此路線 →">Book This Route →</button>
         </div>
@@ -250,30 +238,25 @@
 
       <!-- Christchurch -->
       <div class="route-card">
-        <div class="route-card-img route-card-img--chch">
-          <div class="route-city-tag">🇳🇿 Christchurch</div>
+        <div class="route-card-img" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Trams_Christchurch_and_Regent_Theatre.jpg/960px-Trams_Christchurch_and_Regent_Theatre.jpg')">
+          <div class="route-card-overlay"></div>
+          <div class="route-city-tag">Christchurch</div>
           <div class="route-card-emoji">🌿</div>
         </div>
         <div class="route-card-body">
           <div class="route-accent-bar" style="background:#F5A623"></div>
           <h3 class="route-name" data-en="Christchurch Central" data-tw="基督城中央">Christchurch Central</h3>
           <p class="route-desc" data-en="Discover Christchurch's rebuilt heart — resilience, street art, and a city reimagined after the earthquakes." data-tw="探索基督城重建後的核心——韌性、街頭藝術，以及地震後重生城市的故事。">Discover Christchurch's rebuilt heart — resilience, street art, and a city reimagined after the earthquakes.</p>
+          <div class="route-endpoints">
+            <span class="ep-start" data-en="Start: Bridge of Remembrance" data-tw="起點：追憶之橋">Start: Bridge of Remembrance</span>
+            <span class="ep-divider">→</span>
+            <span class="ep-end" data-en="End: Bridge of Remembrance" data-tw="終點：追憶之橋">End: Bridge of Remembrance</span>
+          </div>
           <div class="route-stats">
             <span>📍 10 <span data-en="Puzzles" data-tw="關卡">Puzzles</span></span>
             <span>🚶 ~2 km</span>
             <span>⏱️ ~1 <span data-en="hr" data-tw="小時">hr</span></span>
             <span>👥 1–6</span>
-          </div>
-          <div class="route-mini-map">
-            <svg viewBox="0 0 200 56" fill="none">
-              <path d="M8 42 C18 42 24 18 44 16 C64 14 74 34 94 26 C114 18 126 8 146 14 C162 18 174 30 192 26" stroke="#F5A623" stroke-width="2.5" stroke-dasharray="6 3" stroke-linecap="round"/>
-              <circle cx="8"   cy="42" r="5" fill="#F5A623"/>
-              <circle cx="44"  cy="16" r="3.5" fill="#F5A623" opacity=".5"/>
-              <circle cx="94"  cy="26" r="3.5" fill="#F5A623" opacity=".5"/>
-              <circle cx="146" cy="14" r="3.5" fill="#F5A623" opacity=".5"/>
-              <circle cx="192" cy="26" r="5" fill="#F5A623"/>
-            </svg>
-            <span class="route-mini-label" data-en="~2.0 km · 10 stops" data-tw="約 2 公里 · 10 站">~2.0 km · 10 stops</span>
           </div>
           <button class="btn-book-route" data-book-route="christchurch" style="background:#F5A623" data-en="Book This Route →" data-tw="預訂此路線 →">Book This Route →</button>
         </div>
@@ -293,7 +276,7 @@
           <tr>
             <th></th>
             <th class="col-qs"><span>🏙️</span><br><span data-en="Queen St" data-tw="女王街">Queen St</span></th>
-            <th class="col-vi"><span>⛵</span><br><span data-en="Viaduct" data-tw="維阿達克">Viaduct</span></th>
+            <th class="col-vi"><span>⛵</span><br><span data-en="Waterfront" data-tw="海濱">Waterfront</span></th>
             <th class="col-ch"><span>🌿</span><br><span data-en="Christchurch" data-tw="基督城">Christchurch</span></th>
           </tr>
         </thead>
@@ -321,12 +304,6 @@
             <td data-en="CBD history"      data-tw="市中心歷史">CBD history</td>
             <td data-en="Waterfront &amp; sailing" data-tw="海濱與帆船">Waterfront &amp; sailing</td>
             <td data-en="Rebuild &amp; resilience" data-tw="重建與韌性">Rebuild &amp; resilience</td>
-          </tr>
-          <tr>
-            <td data-en="Best for"  data-tw="最適合">Best for</td>
-            <td data-en="First-time visitors" data-tw="初訪旅客">First-time visitors</td>
-            <td data-en="Couples &amp; groups"  data-tw="情侶與朋友">Couples &amp; groups</td>
-            <td data-en="All groups"         data-tw="所有人">All groups</td>
           </tr>
           <tr class="compare-price-row">
             <td data-en="Price" data-tw="價格">Price</td>
