@@ -117,6 +117,31 @@
   </div>
 </section>
 
+<!-- ── STATS STRIP ── -->
+<section class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-number" data-count="200" data-suffix="+">0+</span>
+      <span class="stat-label" data-en="Teams Played" data-tw="隊伍已遊玩">Teams Played</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-number" data-count="3">0</span>
+      <span class="stat-label" data-en="Routes" data-tw="路線">Routes</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-number" data-count="30">0</span>
+      <span class="stat-label" data-en="Total Puzzles" data-tw="謎題總數">Total Puzzles</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-number stat-static">NZ$25</span>
+      <span class="stat-label" data-en="Per Team" data-tw="每隊">Per Team</span>
+    </div>
+  </div>
+</section>
+
 <!-- ── WHY ── -->
 <section class="why">
   <div class="container">
@@ -455,6 +480,17 @@
   </div>
 </section>
 
+<!-- ── FLOATING BOOK BUTTON ── -->
+<button id="float-book" class="float-book" aria-label="Book Now">
+  🗺️ <span data-en="Book Now" data-tw="立即預訂">Book Now</span>
+</button>
+
+<!-- ── LIVE TOAST ── -->
+<div id="live-toast" class="live-toast" aria-live="polite">
+  <span class="live-dot"></span>
+  <span id="live-toast-text" class="live-toast-text"></span>
+</div>
+
 <!-- ── FOOTER ── -->
 <footer class="footer">
   <div class="container">
@@ -524,6 +560,102 @@ document.getElementById('nav-hamburger').addEventListener('click', () => {
 document.querySelectorAll('.nav-mobile a').forEach(a =>
   a.addEventListener('click', () => document.getElementById('nav-mobile').classList.remove('open'))
 );
+
+// ── Scroll fade-in ───────────────────────────────────────────────
+(function () {
+  const targets = [
+    '.why-card', '.step', '.route-card', '.review-card',
+    '.faq-item', '.compare-table', '.book-card', '.stats-inner'
+  ];
+  document.querySelectorAll(targets.join(',')).forEach((el, i) => {
+    el.classList.add('fade-up');
+    // stagger siblings in the same parent
+    const siblings = Array.from(el.parentElement.children).filter(c => c.classList.contains('fade-up'));
+    const pos = siblings.indexOf(el);
+    if (pos > 0) el.style.transitionDelay = (pos * 0.1) + 's';
+  });
+  const fadeObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); } });
+  }, { threshold: 0.10 });
+  document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
+})();
+
+// ── Count-up ─────────────────────────────────────────────────────
+(function () {
+  function countUp(el) {
+    const target = +el.dataset.count;
+    const suffix = el.dataset.suffix || '';
+    let current = 0;
+    const steps = 60;
+    const inc = target / steps;
+    const timer = setInterval(() => {
+      current = Math.min(current + inc, target);
+      el.textContent = Math.floor(current) + suffix;
+      if (current >= target) clearInterval(timer);
+    }, 22);
+  }
+  const countObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { countUp(e.target); countObs.unobserve(e.target); } });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+})();
+
+// ── Floating Book button ──────────────────────────────────────────
+(function () {
+  const btn    = document.getElementById('float-book');
+  const heroEl = document.querySelector('.hero');
+  const bookEl = document.getElementById('book');
+  function update() {
+    const heroGone  = heroEl.getBoundingClientRect().bottom < 0;
+    const bookFar   = bookEl.getBoundingClientRect().top > window.innerHeight;
+    btn.classList.toggle('show', heroGone && bookFar);
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  btn.addEventListener('click', () => bookEl.scrollIntoView({ behavior: 'smooth' }));
+})();
+
+// ── Live toast ────────────────────────────────────────────────────
+(function () {
+  const toast    = document.getElementById('live-toast');
+  const textEl   = document.getElementById('live-toast-text');
+  const messages = [
+    '3 teams are playing right now',
+    'A team just started in Auckland!',
+    'Someone just booked Queen St Explorer',
+    '2 teams exploring the Waterfront today',
+    'A team just finished in Christchurch!',
+    'Booked today: 5 teams',
+    'A group of 4 just started playing!',
+  ];
+  let i = 0;
+  function show() {
+    textEl.textContent = messages[i++ % messages.length];
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4500);
+  }
+  setTimeout(() => { show(); setInterval(show, 28000); }, 6000);
+})();
+
+// ── Comparison table column highlight ────────────────────────────
+(function () {
+  const table = document.querySelector('.compare-table');
+  if (!table) return;
+  const headers = table.querySelectorAll('thead th:not(:first-child)');
+  headers.forEach((th, ci) => {
+    th.style.cursor = 'pointer';
+    th.title = 'Click to highlight';
+    th.addEventListener('click', () => {
+      // clear all
+      table.querySelectorAll('.col-active').forEach(el => el.classList.remove('col-active'));
+      th.classList.add('col-active');
+      table.querySelectorAll('tbody tr').forEach(row => {
+        const cells = row.querySelectorAll('td');
+        // ci+1 because first td is the row label
+        if (cells[ci + 1]) cells[ci + 1].classList.add('col-active');
+      });
+    });
+  });
+})();
 
 // Expose currentLang so app.js setLang can update route label
 window.__onLangChange = function(l) {
