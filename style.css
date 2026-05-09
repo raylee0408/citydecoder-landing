@@ -303,12 +303,14 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.2; }
 }
 .route-city-tag {
   position: absolute; top: 12px; left: 14px;
-  background: rgba(0,0,0,0.45); color: white;
-  font-size: 0.72rem; font-weight: 600;
+  color: white;
+  font-size: 0.72rem; font-weight: 700;
   padding: 3px 11px; border-radius: 50px;
   backdrop-filter: blur(4px);
   z-index: 2;
 }
+.city-auckland     { background: rgba(0,150,180,0.85); }
+.city-christchurch { background: rgba(210,130,0,0.85); }
 .route-card-emoji {
   position: relative; z-index: 2;
   font-size: 2.6rem; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
