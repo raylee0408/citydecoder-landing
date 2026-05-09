@@ -30,9 +30,13 @@ exports.handler = async (event) => {
     };
   }
 
-  // Check if team name already exists
-  const existing = await db.collection('teams').where('name', '==', cleanName).limit(1).get();
-  if (!existing.empty) {
+  // Check if team name already exists on the same route (auckland), excluding archived/completed teams
+  const existing = await db.collection('teams').where('name', '==', cleanName).get();
+  const conflict = existing.docs.find(doc => {
+    const d = doc.data();
+    return (d.route || 'auckland') === 'auckland' && !d.archived && !d.gameCompleted;
+  });
+  if (conflict) {
     return {
       statusCode: 409,
       body: JSON.stringify({ code: 'TEAM_EXISTS', error: 'Team name already taken' })
