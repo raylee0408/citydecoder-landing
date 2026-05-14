@@ -58,6 +58,7 @@
           <a href="#book" class="btn-hero" data-book-route="queenst" style="background:var(--accent)" data-en="Book Now — NZ$25 →" data-tw="立即預訂 — NZ$25 →">Book Now — NZ$25 →</a>
           <a href="#routes" class="btn-hero-ghost" data-en="See all routes" data-tw="查看所有路線">See all routes</a>
         </div>
+        <p class="hero-price-note" data-en="NZ$25 per team · up to 6 people · as low as NZ$4 per person" data-tw="每隊 NZ$25 · 最多 6 人 · 每人低至 NZ$4">NZ$25 per team · up to 6 people · as low as NZ$4 per person</p>
       </div>
     </div>
 
@@ -80,6 +81,7 @@
           <a href="#book" class="btn-hero" data-book-route="viaduct" style="background:var(--accent)" data-en="Book Now — NZ$25 →" data-tw="立即預訂 — NZ$25 →">Book Now — NZ$25 →</a>
           <a href="#routes" class="btn-hero-ghost" data-en="See all routes" data-tw="查看所有路線">See all routes</a>
         </div>
+        <p class="hero-price-note" data-en="NZ$25 per team · up to 6 people · as low as NZ$4 per person" data-tw="每隊 NZ$25 · 最多 6 人 · 每人低至 NZ$4">NZ$25 per team · up to 6 people · as low as NZ$4 per person</p>
       </div>
     </div>
 
@@ -102,6 +104,7 @@
           <a href="#book" class="btn-hero" data-book-route="christchurch" style="background:var(--accent)" data-en="Book Now — NZ$25 →" data-tw="立即預訂 — NZ$25 →">Book Now — NZ$25 →</a>
           <a href="#routes" class="btn-hero-ghost" data-en="See all routes" data-tw="查看所有路線">See all routes</a>
         </div>
+        <p class="hero-price-note" data-en="NZ$25 per team · up to 6 people · as low as NZ$4 per person" data-tw="每隊 NZ$25 · 最多 6 人 · 每人低至 NZ$4">NZ$25 per team · up to 6 people · as low as NZ$4 per person</p>
       </div>
     </div>
 
@@ -137,7 +140,7 @@
     <div class="stat-divider"></div>
     <div class="stat-item">
       <span class="stat-number stat-static">NZ$25</span>
-      <span class="stat-label" data-en="Per Team" data-tw="每隊">Per Team</span>
+      <span class="stat-label" data-en="Per Team (1–6 people)" data-tw="每隊（1–6 人）">Per Team (1–6 people)</span>
     </div>
   </div>
 </section>
@@ -447,7 +450,10 @@
 
         <div class="book-total">
           <span data-en="Total" data-tw="合計">Total</span>
-          <strong id="total-display">NZ$ 25</strong>
+          <div class="book-total-right">
+            <strong id="total-display">NZ$ 25</strong>
+            <span class="book-per-person" data-en="= NZ$4 per person for a group of 6" data-tw="6 人平均每人僅 NZ$4">= NZ$4 per person for a group of 6</span>
+          </div>
         </div>
 
         <button type="submit" class="btn-checkout" id="checkout-btn">
@@ -484,6 +490,26 @@
       <details class="faq-item">
         <summary data-en="Can I get a refund?" data-tw="可以退款嗎？">Can I get a refund?</summary>
         <p data-en="We offer refunds if requested before the game has been started. Contact us at hello@playcitydecoder.com." data-tw="在遊戲開始前提出申請可以退款。聯絡我們：hello@playcitydecoder.com。">We offer refunds if requested before the game has been started. Contact us at hello@playcitydecoder.com.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary data-en="Is it suitable for kids? What age?" data-tw="適合小孩嗎？幾歲可以玩？">Is it suitable for kids? What age?</summary>
+        <p data-en="Yes! Kids aged 8 and above can usually participate fully — they love finding clues and spotting details adults miss. Younger children are welcome too, just with a bit of parental help on the trickier puzzles. All routes involve relaxed walking with no climbing or special access required." data-tw="適合！8 歲以上的小孩通常可以完整參與——他們特別擅長找線索和發現大人看漏的細節。更小的孩子也歡迎，部分謎題可能需要大人協助。所有路線都只需輕鬆步行，不需要攀爬或特殊進入許可。">Yes! Kids aged 8 and above can usually participate fully — they love finding clues and spotting details adults miss. Younger children are welcome too, just with a bit of parental help on the trickier puzzles. All routes involve relaxed walking with no climbing or special access required.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary data-en="What if the weather is bad?" data-tw="天氣不好怎麼辦？">What if the weather is bad?</summary>
+        <p data-en="Your code never expires, so you can simply wait for a better day. All puzzles are solvable from the street — no need to enter buildings or stand in exposed locations for long. Light rain is usually fine; we'd suggest postponing only in heavy wind or storm conditions." data-tw="你的密碼沒有期限，遇到壞天氣直接換日期就好。所有謎題都可以在街道上解開，不需進入建築物或長時間在空曠處等待。小雨通常沒問題；我們只建議在大風或暴風雨時改期。">Your code never expires, so you can simply wait for a better day. All puzzles are solvable from the street — no need to enter buildings or stand in exposed locations for long. Light rain is usually fine; we'd suggest postponing only in heavy wind or storm conditions.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary data-en="What if we can't finish in one go?" data-tw="如果沒辦法一次玩完怎麼辦？">What if we can't finish in one go?</summary>
+        <p data-en="No problem — your progress is saved automatically. Log back in with the same team name and password and you'll pick up exactly where you left off. Just note that the clock keeps running from your first login, so if you're competing on the leaderboard, try to finish in one session." data-tw="沒問題——進度會自動儲存。用相同的隊伍名稱和密碼重新登入，就能從上次停下的地方繼續。請注意計時從第一次登入開始，如果你想在排行榜上有好成績，建議一次完成。">No problem — your progress is saved automatically. Log back in with the same team name and password and you'll pick up exactly where you left off. Just note that the clock keeps running from your first login, so if you're competing on the leaderboard, try to finish in one session.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary data-en="I already have a code — where do I log in?" data-tw="我已有密碼，要去哪裡登入？">I already have a code — where do I log in?</summary>
+        <p data-en='Head to the game link for your route: <a href="https://auckland.playcitydecoder.com" target="_blank" rel="noopener">Auckland Queen St</a> · <a href="https://viaduct.playcitydecoder.com" target="_blank" rel="noopener">Viaduct Wynyard</a> · <a href="https://christchurch.playcitydecoder.com" target="_blank" rel="noopener">Christchurch</a>. Enter your team name and 4-digit password to get started. If you can&rsquo;t find your email, check your spam folder or contact us at hello@playcitydecoder.com.' data-tw='前往你路線的遊戲連結：<a href="https://auckland.playcitydecoder.com" target="_blank" rel="noopener">奧克蘭女王街</a> · <a href="https://viaduct.playcitydecoder.com" target="_blank" rel="noopener">維阿達克</a> · <a href="https://christchurch.playcitydecoder.com" target="_blank" rel="noopener">基督城</a>。輸入隊伍名稱和 4 位數密碼即可開始。找不到 Email 請先查看垃圾郵件，或聯絡 hello@playcitydecoder.com。'>Head to the game link for your route: <a href="https://auckland.playcitydecoder.com" target="_blank" rel="noopener">Auckland Queen St</a> · <a href="https://viaduct.playcitydecoder.com" target="_blank" rel="noopener">Viaduct Wynyard</a> · <a href="https://christchurch.playcitydecoder.com" target="_blank" rel="noopener">Christchurch</a>. Enter your team name and 4-digit password to get started. If you can't find your email, check your spam folder or contact us at hello@playcitydecoder.com.</p>
       </details>
     </div>
   </div>
