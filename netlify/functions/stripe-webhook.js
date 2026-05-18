@@ -76,7 +76,8 @@ exports.handler = async (event) => {
       <p>感謝你預訂 <strong>Queen St Explorer — 奧克蘭</strong>！把這封信分享給全隊，大家用同一組名稱和密碼登入。</p>
       <div style="background:#FFF8F0;border:2px solid #FFD166;border-radius:16px;padding:24px;margin:24px 0;text-align:center">
         <p style="margin:0 0 8px;font-size:0.9rem;color:#666">隊伍名稱</p>
-        <h2 style="margin:0 0 16px;font-size:1.8rem;color:#1a1a2e">${teamName}</h2>
+        <h2 style="margin:0 0 4px;font-size:1.8rem;color:#1a1a2e">${teamName}</h2>
+        <p style="margin:0 0 16px;font-size:0.78rem;color:#FF6B35;font-weight:bold">⚠️ 大小寫相同，請照原字登入</p>
         <p style="margin:0 0 8px;font-size:0.9rem;color:#666">密碼</p>
         <h2 style="margin:0;font-size:3rem;color:#FF6B35;letter-spacing:8px">${password}</h2>
       </div>
@@ -111,7 +112,8 @@ exports.handler = async (event) => {
       <p>Thanks for booking <strong>Queen St Explorer — Auckland</strong>! Share this email with your whole team — everyone uses the same team name and password.</p>
       <div style="background:#FFF8F0;border:2px solid #FFD166;border-radius:16px;padding:24px;margin:24px 0;text-align:center">
         <p style="margin:0 0 8px;font-size:0.9rem;color:#666">Team Name</p>
-        <h2 style="margin:0 0 16px;font-size:1.8rem;color:#1a1a2e">${teamName}</h2>
+        <h2 style="margin:0 0 4px;font-size:1.8rem;color:#1a1a2e">${teamName}</h2>
+        <p style="margin:0 0 16px;font-size:0.78rem;color:#FF6B35;font-weight:bold">⚠️ Case sensitive — enter exactly as shown</p>
         <p style="margin:0 0 8px;font-size:0.9rem;color:#666">Password</p>
         <h2 style="margin:0;font-size:3rem;color:#FF6B35;letter-spacing:8px">${password}</h2>
       </div>
